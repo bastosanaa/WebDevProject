@@ -1,4 +1,5 @@
 # Rede Social de Produtividade
+### Alunas: Ana Clara Stupp, Ana Luiza Bastos e Giulia de Bem Rizzieri
 
 ## Visão Geral
 
