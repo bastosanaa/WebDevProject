@@ -15,6 +15,6 @@ Este projeto visa criar uma rede social de produtividade, onde os usuários pode
 
 ## Tecnologias Utilizadas
 
-- **Frontend:** indefinido
-- **Backend:** indefinido
+- **Frontend:** Bootstrap
+- **Backend:** TypeScript
 - **Banco de Dados:**  indefinido
