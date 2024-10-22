@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
-const userController = {
+const controladorUsuario = {
 
     create: async(req, res) => {
 
@@ -78,8 +78,9 @@ const userController = {
         const token = jwt.sign( payload, process.env.SEGREDO, { expiresIn: 20000 });
         res.json({msg: "Login bem sucedido", auth:true, token})
     }  
-
 }
+
+module.exports = controladorUsuario
 
 //função Hash
 async function hashSenha(password) {
