@@ -1,5 +1,5 @@
 const { Usuario: UsuarioModelo, Usuario } = require("../modelos/Usuario.js");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
@@ -14,6 +14,7 @@ const controladorUsuario = {
             experiencia: 0,
             amigos: []
         }
+        
 
         const usuarioRegistrado = await UsuarioModelo.find({email: usuario.email})
         if (usuarioRegistrado.length > 0) {

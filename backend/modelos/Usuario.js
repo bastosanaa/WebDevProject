@@ -20,7 +20,7 @@ const UsuarioSchema = new Schema({
     },
     amigos: [{
         usuario_id: {
-            type: mongoose.Schema.Type.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
         }
     }]
 })
