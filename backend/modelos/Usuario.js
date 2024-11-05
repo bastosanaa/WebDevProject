@@ -13,13 +13,21 @@ const UsuarioSchema = new Schema({
         required: true
     },
     senha: {
-        tye
+        type: String
+    },
+    experiencia: {
+        type: Number
     },
     amigos: [{
         usuario_id: {
-            type: mongoose.Schema.Type.ObjectId,
-
+            type: mongoose.Schema.Types.ObjectId,
         }
     }]
-
 })
+
+const Usuario = mongoose.model("usuarios", UsuarioSchema)
+
+module.exports = {
+    Usuario,
+    UsuarioSchema
+}
