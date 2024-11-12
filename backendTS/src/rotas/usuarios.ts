@@ -15,7 +15,7 @@ roteador.route("/update/:id").patch(
         tryCatch(req, res, next, controladorUsuario.update)
     });
 
-roteador.route("/delete").delete(
+roteador.route("/delete/:id").delete(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorUsuario.delete)
     });

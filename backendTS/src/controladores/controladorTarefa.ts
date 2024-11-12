@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import { TarefaModelo } from "../modelos/Tarefa";
 import { Tarefa } from "../modelos/Tarefa";  // Adicionando tipo para Tarefa, caso necessário
 
@@ -6,9 +7,24 @@ const controladorTarefa = {
 
     create: async (req: Request, res: Response): Promise<void> => {
         const { titulo, meta_tempo, data_termino, em_grupo, membros } = req.body;
+        let { usuario_id } = req.params
+
+        if (!titulo || !usuario_id) {
+            res.status(400).json({ msg: "Título e usuário são obrigatórios" });
+            return;
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(usuario_id)) {
+            res.status(400).json({ msg: "ID de usuário inválido" });
+            return;
+        }
+
+        const usuarioObjectId = new mongoose.Types.ObjectId(usuario_id);
+
 
         const tarefa: Partial<Tarefa> = {
             titulo,
+            usuario_id: usuarioObjectId,
             meta_tempo,
             data_termino,
             em_grupo,
@@ -32,7 +48,7 @@ const controladorTarefa = {
     },
 
     delete: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.body;
+        const { id } = req.params;
 
         const tarefaDeletada = await Tarefa.findByIdAndDelete(id);
         if (!tarefaDeletada) {

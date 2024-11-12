@@ -38,7 +38,7 @@ const controladorUsuario = {
     },
 
     delete: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.body;
+        const { id } = req.params;
 
         const usuarioDeletado = await Usuario.findByIdAndDelete(id);
 

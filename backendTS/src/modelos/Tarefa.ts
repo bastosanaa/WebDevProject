@@ -10,6 +10,7 @@ interface Membro {
 // Definir o tipo para o documento de Tarefa
 interface Tarefa extends Document {
     titulo: string;
+    usuario_id : mongoose.Types.ObjectId;
     meta_tempo?: number;
     data_termino?: Date;
     em_grupo?: boolean;
@@ -18,9 +19,15 @@ interface Tarefa extends Document {
 
 // Definir o schema para a tarefa
 const TarefaModelo: Schema<Tarefa> = new Schema({
+
     titulo: {
         type: String,
         required: true
+    },
+    usuario_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Usuario'
     },
     meta_tempo: {
         type: Number

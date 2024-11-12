@@ -5,7 +5,7 @@ import tryCatch from "../utils/tryCatch";
 // Criando o roteador do Express
 const roteador = express.Router();
 
-roteador.route("/post").post(
+roteador.route("/post/:usuario_id").post(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorTarefa.create)
     });
@@ -15,7 +15,7 @@ roteador.route("/update/:id").patch(
         tryCatch(req, res, next, controladorTarefa.update)
     });
 
-roteador.route("/delete").delete(
+roteador.route("/delete/:id").delete(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorTarefa.delete)
     });
