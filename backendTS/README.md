@@ -10,6 +10,8 @@
 
 3. rodar a aplicacao: npm start (deve ser reiniciada caso haja alguma modificação no backend)
 
+**Nota**: Certifique-se de que o MongoDB está instalado localmente e que o serviço do MongoDB está em execução para que o projeto funcione corretamente.
+
 # rotas:
 
 - o fluxo da aplicação inicia no app.ts, definindo a porta que sera utilizada para rodar o backend localmente, atualmente a porta seria http://localhost:4444/api
