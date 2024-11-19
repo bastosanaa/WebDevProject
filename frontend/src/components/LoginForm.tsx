@@ -1,21 +1,19 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 
 import "./LoginForm.css";
 
 const LoginForm: React.FC = () => {
   return (
-    <Form className="login-form">
-      <Form.Group controlId="formBasicUsername">
-        <Form.Label
+    <form className="login-form">
+      <div>
+        <label
           style={{
             color: "#d78794",
           }}
         >
           Nome de Usuário
-        </Form.Label>
-        <Form.Control
+        </label>
+        <input
           type="text"
           placeholder=""
           style={{
@@ -25,17 +23,17 @@ const LoginForm: React.FC = () => {
             color: "#e8c6c9",
           }}
         />
-      </Form.Group>
+      </div>
 
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label
+      <div>
+        <label
           style={{
             color: "#d78794",
           }}
         >
           Senha
-        </Form.Label>
-        <Form.Control
+        </label>
+        <input
           type="password"
           placeholder=""
           style={{
@@ -45,12 +43,12 @@ const LoginForm: React.FC = () => {
             color: "#e8c6c9",
           }}
         />
-      </Form.Group>
+      </div>
 
-      <Form.Group controlId="formBasicCheckbox">
-        <Form.Check
+      <div>
+        <label>Mantenha-me conectado</label>
+        <input
           type="checkbox"
-          label="Mantenha-me conectado"
           style={{
             color: "#d78794",
           }}
@@ -58,10 +56,9 @@ const LoginForm: React.FC = () => {
         <a href="#" className="forgot-password" style={{ color: "#d78794" }}>
           Esqueceu a senha?
         </a>
-      </Form.Group>
+      </div>
 
-      <Button
-        variant="primary"
+      <button
         type="submit"
         style={{
           border: "none",
@@ -71,8 +68,8 @@ const LoginForm: React.FC = () => {
         }}
       >
         Login
-      </Button>
-    </Form>
+      </button>
+    </form>
   );
 };
 
