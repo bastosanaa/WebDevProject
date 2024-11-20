@@ -1,20 +1,50 @@
-# Rede Social de Produtividade
-### Alunas: Ana Clara Stupp, Ana Luiza Bastos e Giulia de Bem Rizzieri
+# React + TypeScript + Vite
 
-## Visão Geral
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Este projeto visa criar uma rede social de produtividade, onde os usuários podem registrar suas atividades produtivas usando a técnica Pomodoro. O objetivo é permitir que os usuários "compitam" entre si com base na quantidade de horas produtivas.
+Currently, two official plugins are available:
 
-## Funcionalidades
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-- **Cadastro de Usuário:** Permite que os usuários se cadastrem no site e alterem seus dados pessoais.
-- **Registro de Atividades:** Usuários podem registrar suas atividades produtivas usando a técnica Pomodoro.
-- **Criação de Grupos:** Os usuários poderão criar grupos para trocar mensagens e interagir com outros membros.
-- **Ranking de Produtividade:** Visualize um ranking que mostra as horas produtivas de cada usuário, promovendo uma competição amigável.
+## Expanding the ESLint configuration
 
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## Tecnologias Utilizadas
+- Configure the top-level `parserOptions` property like this:
 
-- **Frontend:** Bootstrap
-- **Backend:** TypeScript
-- **Banco de Dados:**  indefinido
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
