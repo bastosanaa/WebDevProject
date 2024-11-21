@@ -4,69 +4,26 @@ import "./LoginForm.css";
 
 const LoginForm: React.FC = () => {
   return (
-    <form className="login-form">
-      <div>
-        <label
-          style={{
-            color: "#d78794",
-          }}
-        >
-          Nome de Usuário
-        </label>
-        <input
-          type="text"
-          placeholder=""
-          style={{
-            backgroundColor: "#e8c6c9", // Rosa claro
-            border: "none",
-            borderRadius: "8px",
-            color: "#e8c6c9",
-          }}
-        />
+    <form className="flex flex-col gap-4 min-w-96">
+      <div className="flex flex-col gap-1">
+        <label className="label">Nome de Usuário</label>
+        <input type="text" placeholder="" className="input" />
       </div>
 
-      <div>
-        <label
-          style={{
-            color: "#d78794",
-          }}
-        >
-          Senha
-        </label>
-        <input
-          type="password"
-          placeholder=""
-          style={{
-            backgroundColor: "#e8c6c9", // Rosa claro
-            border: "none",
-            borderRadius: "8px",
-            color: "#e8c6c9",
-          }}
-        />
+      <div className="flex flex-col gap-1">
+        <label className="label">Senha</label>
+        <input type="password" placeholder="" className="input" />
       </div>
 
-      <div>
-        <label>Mantenha-me conectado</label>
-        <input
-          type="checkbox"
-          style={{
-            color: "#d78794",
-          }}
-        />
-        <a href="#" className="forgot-password" style={{ color: "#d78794" }}>
-          Esqueceu a senha?
-        </a>
+      <div className="flex self-end gap-4 items-center">
+        <label className="label">Mantenha-me conectado</label>
+        <input type="checkbox" />
       </div>
+      <a href="#" className="forgot-password" style={{ color: "#d78794" }}>
+        Esqueceu a senha?
+      </a>
 
-      <button
-        type="submit"
-        style={{
-          border: "none",
-          width: "100%",
-          borderRadius: "8px",
-          color: "#f8edeb",
-        }}
-      >
+      <button type="submit" className="button">
         Login
       </button>
     </form>
