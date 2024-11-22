@@ -1,0 +1,62 @@
+.main-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    padding: auto;
+    gap: 28px;
+    color: #d36e70;
+  }
+.upper {
+    background-color:#fff1f2;
+    font-size: 175%;
+    padding: 10px;
+    position: fixed;
+    z-index: 2;
+}
+
+.user-info{
+    position: absolute;
+    width: 30%;
+    height: 70%;
+}
+
+.user-info img{
+    max-height: 100%;
+    position: absolute;
+}
+
+.upper #title{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.user-info #username{
+    font-size: 90%;
+    left: 55px;
+    position: absolute;
+}
+
+.side-right{
+    background-color: #f9f2f2;
+    text-align: center;
+    margin-top: 64px;
+}
+
+.side-right #title{
+    font-size: 150%;
+    letter-spacing: 2px;
+}
+
+.names{
+    justify-content: center;
+    text-align: left;
+    font-size: 113%;
+    margin: 8%;
+}
+
+
