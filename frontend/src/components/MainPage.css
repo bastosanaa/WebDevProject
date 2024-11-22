@@ -55,8 +55,33 @@
 .names{
     justify-content: center;
     text-align: left;
-    font-size: 113%;
+    font-size: 100%;
     margin: 8%;
+}
+
+.button{
+    border-radius: 0;
+    background-color: #df949c;
+}
+
+.tasks{
+    background-color: cyan;
+    margin-top: 64px;
+    margin-right: 240px;
+    margin-bottom: 200px;
+}
+.tasks-group{
+    background-color: white;
+}
+
+.tasks-group button{
+    margin: 0;
+    border: 1px;
+    font-size: 120%;
+}
+
+.tasks-group button::hover{
+    border-color: black;
 }
 
 

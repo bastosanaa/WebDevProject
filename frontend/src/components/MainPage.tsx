@@ -26,7 +26,16 @@ const MainPage: React.FC = () => {
                     </div>
                 </div>
                 <div className="button p-4">
-                    <button className="w-full">+ AMIGO</button>
+                    <button className="w-full rounded-none">+ AMIGO</button>
+                </div>
+            </div>
+            <div className="tasks w-full">
+                <div className="tasks-group p-24">
+                    <ul>
+                        <li><button className="p-4">Tarefa 1</button></li>
+                        <li><button className="p-4">Tarefa 2</button></li>
+                        <li><button className="p-4">Tarefa 3</button></li>
+                    </ul>
                 </div>
             </div>
         </div>
