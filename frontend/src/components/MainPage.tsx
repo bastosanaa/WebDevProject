@@ -25,18 +25,22 @@ const MainPage: React.FC = () => {
                         <span>3. streptococus_fungi</span>
                     </div>
                 </div>
-                <div className="button p-4">
+                <div className="button">
                     <button className="w-full rounded-none">+ AMIGO</button>
                 </div>
             </div>
             <div className="tasks w-full">
-                <div className="tasks-group p-24">
+                <div className="tasks-group scale-125 overflow-y-auto h-80">
                     <ul>
                         <li><button className="p-4">Tarefa 1</button></li>
                         <li><button className="p-4">Tarefa 2</button></li>
                         <li><button className="p-4">Tarefa 3</button></li>
+                        <li><button className="p-4">Tarefa 4</button></li>
+                        <li><button className="p-4">Tarefa 5</button></li>
+                        <li><button className="p-4">Tarefa 6</button></li>
                     </ul>
                 </div>
+                <button className="plus-task absolute inset-x-0 bottom-0 p-4 rounded-lg">Adicionar Tarefa</button>
             </div>
         </div>
     );
