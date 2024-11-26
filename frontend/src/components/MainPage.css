@@ -91,7 +91,24 @@
     font-size: 130%;
 }
 
-button:hover{
-    border: 1px solid black;
+.task-detail-overlay{
+    margin-right: 300px;
+    margin-bottom: 200px;
+    margin-top: 90px;
 }
 
+.task-detail{
+    background-color: white;
+    text-align: left;
+    width: 150%;
+}
+
+.timer{
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 2px solid #df949c;
+}
+
+.pause{
+    margin-bottom: 20px;
+}
