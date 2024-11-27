@@ -1,7 +1,7 @@
 import "./App.css";
 import LoginForm from "./components/LoginForm"; // O formulário permanece igual
 import logo from "./assets/logo.png"; // A logo já está configurada
-import MainPage from "./components/MainPage";
+import MainPage from "./components/pages/MainPage";
 
 function App() {
   return (
