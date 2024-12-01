@@ -25,5 +25,16 @@ roteador.route("/:id").get(
         tryCatch(req, res, next, controladorTarefa.get)
     });
 
+roteador.route("/getTasks/:usuario_id").get(
+    (req: Request, res: Response, next: NextFunction) => {
+        tryCatch(req, res, next, controladorTarefa.getPorUsuario);
+    }
+);
+
+roteador.route("/updateStatus/:id").get(
+    (req: Request, res: Response, next: NextFunction) => {
+        tryCatch(req, res, next, controladorTarefa.updateStatusEmAndamento);
+    }
+);
 
 export default roteador;

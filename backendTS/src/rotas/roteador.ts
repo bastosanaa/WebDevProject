@@ -4,8 +4,8 @@ import tryCatch from "../utils/tryCatch";
 const roteador = Router();
 
 import  controladorUsuario  from '../controladores/controladorUsuario';
-import  controladorTarefa  from '../controladores/controladorTarefa';
 
+// ❗❗❗ adicionar VerificaToken para as rotas privadas
 //Roteador Usuário
 import roteadorUsuario from './usuarios';
 roteador.use('/usuarios', roteadorUsuario);

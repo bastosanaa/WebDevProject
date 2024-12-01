@@ -13,6 +13,7 @@ interface Tarefa extends Document {
     usuario_id : mongoose.Types.ObjectId;
     meta_tempo?: number;
     data_termino?: Date;
+    em_andamento: boolean;
     em_grupo?: boolean;
     membros: Membro[];
 }
@@ -27,13 +28,16 @@ const TarefaModelo: Schema<Tarefa> = new Schema({
     usuario_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'Usuario'
+        ref: 'usuarios'
     },
     meta_tempo: {
         type: Number
     },
     data_termino: {
         type: Date
+    },
+    em_andamento: {
+        type: Boolean
     },
     em_grupo: {
         type: Boolean
@@ -42,7 +46,7 @@ const TarefaModelo: Schema<Tarefa> = new Schema({
         usuario_id: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
-            ref: 'Usuario' 
+            ref: 'usuarios' 
         },
         nome_usuario: {
             type: String,

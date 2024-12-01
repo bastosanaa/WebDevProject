@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { TarefaModelo } from "../modelos/Tarefa";
+// import { TarefaModelo } from "../modelos/Tarefa";
+import { Usuario } from '../modelos/Usuario';
 import { Tarefa } from "../modelos/Tarefa";  // Adicionando tipo para Tarefa, caso necessário
 
 const controladorTarefa = {
@@ -27,6 +28,7 @@ const controladorTarefa = {
             usuario_id: usuarioObjectId,
             meta_tempo,
             data_termino,
+            em_andamento: true,
             em_grupo,
             membros
         };
@@ -60,13 +62,14 @@ const controladorTarefa = {
     },
 
     update: async (req: Request, res: Response): Promise<void> => {
-        const { titulo, meta_tempo, data_termino, em_grupo, membros } = req.body;
+        const { titulo, meta_tempo, data_termino, em_grupo, membros, em_andamento } = req.body;
         const { id } = req.params;
 
         const tarefa: Partial<Tarefa> = {
             titulo,
             meta_tempo,
             data_termino,
+            em_andamento,
             em_grupo,
             membros
         };
@@ -90,6 +93,38 @@ const controladorTarefa = {
             return;
         }
         res.status(200).json({ tarefa: tarefa, msg: "Tarefa encontrada com sucesso"})
+    },
+
+    getPorUsuario: async (req: Request, res: Response): Promise<void> => {
+        const { usuario_id } = req.params;
+
+        const tarefas = await Tarefa.find({ usuario_id }).populate('usuario_id', 'nome');
+
+        // if (tarefas.length === 0) {
+        // res.status(404).json({ mensagem: 'Nenhuma tarefa encontrada para esse usuário.' });
+        // return;
+        // }
+
+        res.status(200).json(tarefas);
+        return;
+    },
+
+    updateStatusEmAndamento: async (req: Request, res: Response): Promise<void> => {
+        const { id } = req.params;
+
+        const tarefa = await Tarefa.findById(id)
+
+        if (!tarefa) {
+            res.status(404).json({ mensagem: 'Tarefa não encontrada.' });
+            return;
+        }
+
+        tarefa.em_andamento = !tarefa.em_andamento;
+
+        await tarefa.save();
+
+        res.status(200).json({ mensagem: 'Status da tarefa atualizado com sucesso.', tarefa });
+        return;
     }
 };
 

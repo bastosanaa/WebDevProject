@@ -5,7 +5,7 @@ interface RequisicaoCustomizada extends Request {
     usuario?: string
 }
 
-function verificaToken(req: RequisicaoCustomizada, res: Response, next: NextFunction) {
+export function verificaToken(req: RequisicaoCustomizada, res: Response, next: NextFunction) {
     const token = req.header('Authorization');
     if (!token) {
         return res.status(401).json({msg: "Token não encontrado"})
@@ -27,3 +27,4 @@ function verificaToken(req: RequisicaoCustomizada, res: Response, next: NextFunc
         return res.status(400).json({msg: "Token Inválido"})
     }
 }
+
