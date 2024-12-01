@@ -31,7 +31,7 @@ roteador.route("/getTasks/:usuario_id").get(
     }
 );
 
-roteador.route("/updateStatus/:id").get(
+roteador.route("/updateStatus/:id").patch(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorTarefa.updateStatusEmAndamento);
     }

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import { Usuario } from "../modelos/Usuario";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -108,7 +109,74 @@ const controladorUsuario = {
         const token = jwt.sign(payload, process.env.SEGREDO as string, { expiresIn: '1h' });
 
         res.json({ msg: "Login bem sucedido", auth: true, token });
+    },
+
+    // Funções relacionadas a Amizade 
+    addAmigo: async (req: Request, res: Response): Promise<void> => {
+        const { usuario_id, amigo_id } = req.body;
+
+        // Validar os IDs antes de usá-los
+        if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {
+            res.status(400).json({ mensagem: 'IDs inválidos fornecidos.' });
+            return;
+        }
+    
+        const usuario = await Usuario.findById(usuario_id);
+        const amigo = await Usuario.findById(amigo_id);
+    
+        if (!usuario || !amigo) {
+            res.status(404).json({ mensagem: 'Usuário ou amigo não encontrado.' });
+            return;
+        }
+
+        //verifica se já são amigos
+        const jaSaoAmigosUsuario = usuario.amigos.some(amigoObj => amigoObj.usuario_id.equals(amigo_id));
+        const jaSaoAmigosAmigo = amigo.amigos.some(amigoObj => amigoObj.usuario_id.equals(usuario_id));
+
+        if (jaSaoAmigosUsuario || jaSaoAmigosAmigo) {
+            res.status(400).json({ mensagem: 'Amizade já estabelecida.' });
+            return;
+        }
+    
+        // Adicionar o amigo no campo `amigos` de ambos os usuários
+        usuario.amigos.push({ usuario_id: amigo._id as mongoose.Types.ObjectId });
+        amigo.amigos.push({ usuario_id: usuario._id as mongoose.Types.ObjectId });
+    
+        // Salvar as alterações no banco
+        await usuario.save();
+        await amigo.save();
+    
+        res.status(200).json({ mensagem: 'Amizade adicionada com sucesso!' });
+    },
+
+    removeAmigo: async (req: Request, res: Response): Promise<void> => {
+        const { usuario_id, amigo_id } = req.body;
+    
+        // Validar os IDs antes de usá-los
+        if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {
+            res.status(400).json({ mensagem: 'IDs inválidos fornecidos.' });
+            return;
+        }
+    
+        const usuario = await Usuario.findById(usuario_id);
+        const amigo = await Usuario.findById(amigo_id);
+    
+        if (!usuario || !amigo) {
+            res.status(404).json({ mensagem: 'Usuário ou amigo não encontrado.' });
+            return;
+        }
+    
+        // Remover o amigo do campo `amigos` de ambos os usuários
+        usuario.amigos = usuario.amigos.filter(amigo => !amigo.usuario_id.equals(amigo_id));
+        amigo.amigos = amigo.amigos.filter(amigo => !amigo.usuario_id.equals(usuario_id));
+    
+        // Salvar as alterações no banco
+        await usuario.save();
+        await amigo.save();
+    
+        res.status(200).json({ mensagem: 'Amizade desfeita com sucesso!' });
     }
+    
 };
 
 export default controladorUsuario;
