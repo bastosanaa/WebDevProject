@@ -112,6 +112,7 @@ const controladorUsuario = {
     },
 
     // Funções relacionadas a Amizade 
+    // OBS - addAmigo: esta rota tem relacao as acoes feitas a entidade USUARIO e so deve ser chamadas após a aceitação de um convite de amizade (notificacao)
     addAmigo: async (req: Request, res: Response): Promise<void> => {
         const { usuario_id, amigo_id } = req.body;
 
@@ -165,6 +166,15 @@ const controladorUsuario = {
             res.status(404).json({ mensagem: 'Usuário ou amigo não encontrado.' });
             return;
         }
+
+        //verifica se já são amigos
+        const jaSaoAmigosUsuario = usuario.amigos.some(amigoObj => amigoObj.usuario_id.equals(amigo_id));
+        const jaSaoAmigosAmigo = amigo.amigos.some(amigoObj => amigoObj.usuario_id.equals(usuario_id));
+
+        if (!jaSaoAmigosUsuario || !jaSaoAmigosAmigo) {
+            res.status(400).json({ mensagem: 'Amizade não existe.' });
+            return;
+        }
     
         // Remover o amigo do campo `amigos` de ambos os usuários
         usuario.amigos = usuario.amigos.filter(amigo => !amigo.usuario_id.equals(amigo_id));
@@ -180,3 +190,4 @@ const controladorUsuario = {
 };
 
 export default controladorUsuario;
+
