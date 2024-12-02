@@ -12,6 +12,7 @@ module.exports = {
         current: "currentColor",
         "bubble-gum": "#ff77e9",
         "rosa-claro": "#f8edeb",
+        "rosa-claro-1": "#f9f2f2",
         "rosa-inter": "#edcacb",
         "rosa-escuro": "#d78794",
       },

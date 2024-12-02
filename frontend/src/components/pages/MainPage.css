@@ -7,10 +7,10 @@
   justify-content: center;
   padding: auto;
   gap: 28px;
-  color: #d36e70;
+  @apply text-rosa-escuro;
 }
 .upper {
-  background-color: #fff1f2;
+  @apply bg-rosa-claro;
   font-size: 175%;
   padding: 10px;
   position: fixed;
@@ -35,6 +35,10 @@
   position: absolute;
 }
 
+.upper #hamb{
+  position: absolute;
+}
+
 .user-info #username {
   font-size: 90%;
   left: 55px;
@@ -42,9 +46,10 @@
 }
 
 .side-right {
-  background-color: #f9f2f2;
+  @apply bg-rosa-claro-1;
   text-align: center;
   margin-top: 64px;
+  transition: transform 0.3s ease;
 }
 
 .side-right #title {
@@ -66,7 +71,7 @@
 }
 
 .tasks-group {
-  background-color: white;
+  @apply bg-rosa-claro;
   text-align: left;
   width: 150%;
   margin-bottom: 100px;
@@ -79,8 +84,8 @@
 }
 
 .plus-task {
-  color: #fff1f2;
-  background-color: #df949c;
+  @apply text-rosa-claro;
+  @apply bg-rosa-escuro;
   text-align: center;
   margin-bottom: 50px;
   font-size: 130%;
@@ -93,7 +98,7 @@
 }
 
 .task-detail {
-  background-color: white;
+  @apply bg-rosa-claro;
   text-align: left;
   width: 150%;
 }
@@ -101,7 +106,7 @@
 .timer {
   border-radius: 50%;
   vertical-align: middle;
-  border: 2px solid #df949c;
+  @apply border-2 border-rosa-escuro;
 }
 
 .pause {
@@ -109,5 +114,5 @@
 }
 
 .new-task {
-  background-color: white;
+  @apply bg-rosa-claro;
 }

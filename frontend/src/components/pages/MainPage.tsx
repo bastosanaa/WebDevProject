@@ -10,6 +10,7 @@ const MainPage: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
   const [showTasks, setShowTasks] = useState<boolean>(true);
   const [showNewTask, setShowNewTask] = useState<boolean>(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const handleTaskClick = (task: string) => {
     setSelectedTask(task);
@@ -34,10 +35,14 @@ const MainPage: React.FC = () => {
     setShowTasks(true);
   };
 
+  const toggleSideBar = () => {
+    setIsSideBarOpen(prevState => !prevState);
+  };
+
   return (
     <div className="main-page relative">
-      <NavBar />
-      <SideBar />
+      <NavBar toggleSideBar={toggleSideBar}/>
+      <SideBar isOpen={isSideBarOpen}/>
       {showTasks && !showNewTask && (
         <Tasks onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
       )}
