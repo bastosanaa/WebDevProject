@@ -9,6 +9,7 @@
   gap: 28px;
   @apply text-rosa-escuro;
 }
+
 .upper {
   @apply bg-rosa-claro;
   font-size: 175%;
@@ -19,8 +20,9 @@
 
 .user-info {
   position: absolute;
-  width: 30%;
+  width: 20%;
   height: 70%;
+  cursor: pointer;
 }
 
 .user-info img {
@@ -37,6 +39,12 @@
 
 .upper #hamb{
   position: absolute;
+}
+
+.upper #menu{
+  transition: transform 0.3s ease;
+  font-size: 70%;
+  padding: 5px;
 }
 
 .user-info #username {
