@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  @apply max-w-screen-xl my-0 mx-auto;
+  /* padding: 2rem; */
+}
+
 body {
-  @apply !font-poppins;
+  @apply m-0 p-0 h-screen flex items-center justify-center !font-poppins;
 }
 
 .input {
@@ -15,6 +20,5 @@ body {
 }
 
 .button {
-  @apply px-4 py-3 bg-rosa-escuro rounded-2xl;
-  @apply text-rosa-claro;
+  @apply px-4 py-3 bg-rosa-escuro rounded-2xl text-rosa-claro;
 }

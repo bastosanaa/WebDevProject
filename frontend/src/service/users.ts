@@ -67,7 +67,10 @@ export const loginUser = async (credentials: {
   senha: string;
 }) => {
   try {
-    const response = await axios.post(`${entityBaseUrl}/login`, credentials);
+    const response = await axios.post(
+      `${apiBaseUrl}/autenticacao/usuarios`,
+      credentials
+    );
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
