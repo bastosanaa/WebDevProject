@@ -42,14 +42,6 @@ const UsuarioSchema: Schema<IUsuario> = new Schema(
     { timestamps: true }
 );
 
-// Criptografando a senha antes de salvar no banco
-UsuarioSchema.pre<IUsuario>('save', async function (next) {
-    if (this.isModified('senha')) {
-        this.senha = await bcrypt.hash(this.senha, 10);
-    }
-    next();
-});
-
 // Cria o modelo de Usuario com o esquema e a interface
 const Usuario = mongoose.model<IUsuario>("usuarios", UsuarioSchema);
 
