@@ -3,6 +3,12 @@ import { apiBaseUrl } from "./serviceConsts";
 
 const entityBaseUrl = apiBaseUrl + "/usuarios";
 
+export interface LoginResponse {
+  auth: boolean;
+  msg: string;
+  token: string;
+}
+
 // Service functions
 export const createUser = async (userData: {
   nome: string;
@@ -71,7 +77,7 @@ export const loginUser = async (credentials: {
       `${apiBaseUrl}/autenticacao/usuarios`,
       credentials
     );
-    return response.data;
+    return response.data as LoginResponse;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw error.response?.data || new Error("Failed to login");

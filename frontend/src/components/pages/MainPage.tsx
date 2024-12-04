@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainPage.css";
 import NavBar from "../widgets/NavBar";
 import SideBar from "../widgets/SideBar";
 import Tasks from "../features/todoList/Tasks";
 import Task from "../features/todoList/Task";
 import NewTask from "../features/todoList/NewTask";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const MainPage: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
   const [showTasks, setShowTasks] = useState<boolean>(true);
   const [showNewTask, setShowNewTask] = useState<boolean>(false);
@@ -37,17 +48,21 @@ const MainPage: React.FC = () => {
   };
 
   const toggleSideBar = () => {
-    setIsSideBarOpen(prevState => !prevState);
+    setIsSideBarOpen((prevState) => !prevState);
   };
 
   const menuToggle = () => {
-    setisMenuOpen(prevState => !prevState)
-  }
+    setisMenuOpen((prevState) => !prevState);
+  };
 
   return (
     <div className="main-page relative">
-      <NavBar toggleSideBar={toggleSideBar} toggleUserInfo={menuToggle} isClicked={isMenuOpen}/>
-      <SideBar isOpen={isSideBarOpen}/>
+      <NavBar
+        toggleSideBar={toggleSideBar}
+        toggleUserInfo={menuToggle}
+        isClicked={isMenuOpen}
+      />
+      <SideBar isOpen={isSideBarOpen} />
       {showTasks && !showNewTask && (
         <Tasks onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
       )}

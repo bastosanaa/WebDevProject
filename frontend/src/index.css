@@ -12,7 +12,7 @@ body {
 }
 
 .input {
-  @apply bg-rosa-inter rounded h-8;
+  @apply bg-rosa-inter rounded h-8 focus:outline-none px-3 py-2 text-sm;
 }
 
 .label {

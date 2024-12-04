@@ -1,30 +1,44 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 import { createUser } from "../service/users";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignupForm: React.FC = () => {
+  const [error, setError] = useState("");
   const [user, setUser] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleCreateUser = async () => {
+  const handleCreateUser = async (e: FormEvent) => {
+    e.preventDefault();
     if (user.password !== user.confirmPassword) {
-      alert("Senhas diferentes!");
+      setError("Senhas diferentes!");
       return;
     }
-    await createUser({
-      email: user.email,
-      nome: user.username,
-      senha: user.password,
-    });
-    alert("Usuario criado com sucesso!");
+    try {
+      const res = await createUser({
+        email: user.email,
+        nome: user.username,
+        senha: user.password,
+      });
+      login(res.token);
+      navigate("/");
+      toast.success("Cadastrado com sucesso!");
+    } catch (err) {
+      console.log("err", err);
+    }
   };
 
   return (
     <form onSubmit={handleCreateUser} className="flex flex-col gap-4 min-w-96">
+      {error && <p className="text-red-800">{error}</p>}
       <div className="flex flex-col gap-1">
         <label className="label">Nome de Usuário</label>
         <input

@@ -1,22 +1,40 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 import "./LoginForm.css";
 import { loginUser } from "../service/users";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginForm: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const handleLogin = async () => {
-    const res = await loginUser({ email: user.email, senha: user.password });
-    alert("usuario logado!");
-    console.log("res", res);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await loginUser({ email: user.email, senha: user.password });
+      if (res.auth) {
+        login(res.token);
+        navigate("/");
+        toast.success("Logado com sucesso!");
+      }
+    } catch (err) {
+      const error = err as { msg: string };
+      setError(error.msg);
+    }
   };
 
   return (
     <form onSubmit={handleLogin} className="flex flex-col gap-4 min-w-96">
+      {error && <p className="text-red-700 text-sm">{error}</p>}
       <div className="flex flex-col gap-1">
         <label className="label">Email</label>
         <input
@@ -51,11 +69,7 @@ const LoginForm: React.FC = () => {
         />
       </div>
 
-      <a href="#" className="forgot-password" style={{ color: "#d78794" }}>
-        Esqueceu a senha?
-      </a>
-
-      <button type="submit" className="button">
+      <button type="submit" className="button mt-8">
         Login
       </button>
     </form>
