@@ -13,7 +13,7 @@ interface TasksProps {
 const Tasks:  React.FC<TasksProps> = ({onTaskClick, onAddTask}) => {
     return (
         <div className="tasks w-full">
-                    <div className="tasks-group scale-125 overflow-y-auto h-80">
+                    <div className="tasks-group scale-125 overflow-y-auto h-80 rounded-2xl">
                         <ul>
                             {['Tarefa 1', 'Tarefa 2', 'Tarefa 3', 'Tarefa 4', 'Tarefa 5', 'Tarefa 6'].map((task) => (
                                 <li key={task} className="flex justify-between items-center">

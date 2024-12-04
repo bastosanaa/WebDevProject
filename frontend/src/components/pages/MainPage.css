@@ -80,9 +80,12 @@
 
 .tasks-group {
   @apply bg-rosa-claro;
+  opacity: 0.9;
   text-align: left;
   width: 150%;
   margin-bottom: 100px;
+  scrollbar-width: inherit;
+  scrollbar-color: #d78794 transparent;
 }
 
 .tasks-group button {

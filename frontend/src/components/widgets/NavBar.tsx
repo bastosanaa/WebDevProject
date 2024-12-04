@@ -11,9 +11,11 @@ const NavBar: React.FC<NavBarProps> = ({toggleSideBar, toggleUserInfo, isClicked
     return (
         <div className='object-none object-top'>
                 <div className='upper absolute inset-x-0 top-0 h-16'>
-                    <div className="user-info" onClick={toggleUserInfo}>
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
-                        <span id="username">nome_nome</span>
+                    <div className="user-info">
+                        <div onClick={toggleUserInfo}>
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+                            <span id="username">nome_nome</span>
+                        </div>
                         <div id="menu" className={`mt-6 absolute bg-branco transition-transform duration-300 ${isClicked ? 'opacity-100 translate-y-full': ' opacity-0 translate-y-0'}`}>
                             <p>Sign Out</p>
                         </div>
