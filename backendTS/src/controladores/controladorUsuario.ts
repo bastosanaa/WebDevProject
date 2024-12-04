@@ -35,7 +35,15 @@ const controladorUsuario = {
 
         const response = await Usuario.create(usuario);
 
-        res.status(201).json({ response, msg: "Usuário registrado com sucesso" });
+        const payload = {
+          usuario_id: response._id,
+          usuario_nome: usuario.nome,
+          usuario_email: usuario.email
+        };
+
+        const token = jwt.sign(payload, process.env.SEGREDO as string, { expiresIn: '1h' });
+
+        res.status(201).json({ response, token, msg: "Usuário registrado com sucesso" });
     },
 
     delete: async (req: Request, res: Response): Promise<void> => {
