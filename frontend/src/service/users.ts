@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiBaseUrl } from "./serviceConsts";
+import { getTokenFromLocalStorage } from "../utils/getTokenFromLocalStorage";
 
 const entityBaseUrl = apiBaseUrl + "/usuarios";
 
@@ -9,31 +10,25 @@ export interface LoginResponse {
   token: string;
 }
 
-// Service functions
-export const createUser = async (userData: {
-  nome: string;
-  email: string;
-  senha: string;
-}) => {
-  try {
-    const response = await axios.post(`${entityBaseUrl}/post`, userData);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw error.response?.data || new Error("Failed to create user");
-    }
-    throw new Error("An unexpected error occurred");
-  }
-};
-
+/**
+ * Atualiza um usuário existente.
+ * @param id - O ID do usuário a ser atualizado.
+ * @param userData - Os dados do usuário a serem atualizados.
+ */
 export const updateUser = async (
   id: string,
   userData: { nome?: string; email?: string; senha?: string }
 ) => {
   try {
+    const token = getTokenFromLocalStorage();
     const response = await axios.patch(
       `${entityBaseUrl}/update/${id}`,
-      userData
+      userData,
+      {
+        headers: {
+          Authorization: token, // Passando o token sem o "Bearer"
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -44,9 +39,18 @@ export const updateUser = async (
   }
 };
 
+/**
+ * Deleta um usuário pelo ID.
+ * @param id - O ID do usuário a ser deletado.
+ */
 export const deleteUser = async (id: string) => {
   try {
-    const response = await axios.delete(`${entityBaseUrl}/delete/${id}`);
+    const token = getTokenFromLocalStorage();
+    const response = await axios.delete(`${entityBaseUrl}/delete/${id}`, {
+      headers: {
+        Authorization: token, // Passando o token sem o "Bearer"
+      },
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -56,9 +60,18 @@ export const deleteUser = async (id: string) => {
   }
 };
 
+/**
+ * Recupera os dados de um usuário pelo ID.
+ * @param id - O ID do usuário a ser recuperado.
+ */
 export const getUser = async (id: string) => {
   try {
-    const response = await axios.get(`${entityBaseUrl}/${id}`);
+    const token = getTokenFromLocalStorage();
+    const response = await axios.get(`${entityBaseUrl}/${id}`, {
+      headers: {
+        Authorization: token, // Passando o token sem o "Bearer"
+      },
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -81,6 +94,22 @@ export const loginUser = async (credentials: {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw error.response?.data || new Error("Failed to login");
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const createUser = async (userData: {
+  nome: string;
+  email: string;
+  senha: string;
+}) => {
+  try {
+    const response = await axios.post(`${entityBaseUrl}/post`, userData);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to create user");
     }
     throw new Error("An unexpected error occurred");
   }
