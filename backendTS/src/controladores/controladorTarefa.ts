@@ -7,7 +7,7 @@ import { Tarefa } from "../modelos/Tarefa";  // Adicionando tipo para Tarefa, ca
 const controladorTarefa = {
 
     create: async (req: Request, res: Response): Promise<void> => {
-        const { titulo, meta_tempo, data_termino, em_grupo, membros } = req.body;
+        const { titulo,descricao, meta_tempo, data_termino, em_grupo, membros } = req.body;
         let { usuario_id } = req.params
 
         if (!titulo || !usuario_id) {
@@ -25,6 +25,7 @@ const controladorTarefa = {
 
         const tarefa: Partial<Tarefa> = {
             titulo,
+            descricao,
             usuario_id: usuarioObjectId,
             meta_tempo,
             data_termino,
@@ -62,11 +63,12 @@ const controladorTarefa = {
     },
 
     update: async (req: Request, res: Response): Promise<void> => {
-        const { titulo, meta_tempo, data_termino, em_grupo, membros, em_andamento } = req.body;
+        const { titulo,descricao, meta_tempo, data_termino, em_grupo, membros, em_andamento } = req.body;
         const { id } = req.params;
 
         const tarefa: Partial<Tarefa> = {
             titulo,
+            descricao,
             meta_tempo,
             data_termino,
             em_andamento,
