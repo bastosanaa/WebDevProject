@@ -6,7 +6,8 @@ import controladorUsuario from './controladorUsuario';
 const controladorNotificacao = {
 
     create: async (req: Request, res: Response): Promise<void> => {
-        const { remetente, destinatario, tipo, mensagem } = req.body;
+        const { destinatario, tipo, mensagem } = req.body;
+        const remetente = req.usuario_id;
 
         // Verificação dos campos obrigatórios
         if (!remetente || !destinatario || !tipo) {
@@ -84,7 +85,7 @@ const controladorNotificacao = {
     },
 
     getPorUsuario: async (req: Request, res: Response): Promise<void> => {
-        const { usuario_id } = req.params;
+        const  usuario_id  = req.usuario_id;
 
         if (!mongoose.Types.ObjectId.isValid(usuario_id)) {
             res.status(400).json({ msg: "ID de usuário inválido" });

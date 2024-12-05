@@ -47,7 +47,7 @@ const controladorUsuario = {
     },
 
     delete: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.params;
+        const id = req.usuario_id;
 
         const usuarioDeletado = await Usuario.findByIdAndDelete(id);
 
@@ -61,7 +61,7 @@ const controladorUsuario = {
 
     update: async (req: Request, res: Response): Promise<void> => {
         const { nome, email, senha } = req.body;
-        const { id } = req.params;
+        const id = req.usuario_id;
 
         const usuario = {
             nome,
@@ -79,8 +79,10 @@ const controladorUsuario = {
 
         res.status(200).json({ usuario, msg: "Usuário atualizado com sucesso" });
     },
+    //continua recebendo parametro de usuario (talvez precise arrumar pois nao sei se da para nao passar parametro)
     get: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.params
+        const { id } = req.params ? req.params : req.usuario_id
+        
 
         const usuario = await Usuario.findById(id)
 
@@ -122,7 +124,8 @@ const controladorUsuario = {
     // Funções relacionadas a Amizade 
     // OBS - addAmigo: esta rota tem relacao as acoes feitas a entidade USUARIO e so deve ser chamadas após a aceitação de um convite de amizade (notificacao)
     addAmigo: async (req: Request, res: Response): Promise<void> => {
-        const { usuario_id, amigo_id } = req.body;
+        const { amigo_id } = req.body;
+        const usuario_id = req.usuario_id
 
         // Validar os IDs antes de usá-los
         if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {

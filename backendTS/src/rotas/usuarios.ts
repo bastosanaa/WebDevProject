@@ -10,12 +10,12 @@ roteador.route("/post").post(
         tryCatch(req, res, next, controladorUsuario.create)
     });
 
-roteador.route("/update/:id").patch(
+roteador.route("/update").patch(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorUsuario.update)
     });
 
-roteador.route("/delete/:id").delete(
+roteador.route("/delete").delete(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorUsuario.delete)
     });

@@ -8,7 +8,7 @@ const controladorTarefa = {
 
     create: async (req: Request, res: Response): Promise<void> => {
         const { titulo,descricao, meta_tempo, data_termino, em_grupo, membros } = req.body;
-        let { usuario_id } = req.params
+        const usuario_id = req.usuario_id;
 
         if (!titulo || !usuario_id) {
             res.status(400).json({ msg: "Título e usuário são obrigatórios" });
@@ -98,7 +98,7 @@ const controladorTarefa = {
     },
 
     getPorUsuario: async (req: Request, res: Response): Promise<void> => {
-        const { usuario_id } = req.params;
+        const usuario_id = req.usuario_id;
 
         const tarefas = await Tarefa.find({ usuario_id }).populate('usuario_id', 'nome');
 

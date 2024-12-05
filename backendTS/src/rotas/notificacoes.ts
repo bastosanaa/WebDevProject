@@ -6,7 +6,7 @@ import tryCatch from "../utils/tryCatch";
 const roteador = express.Router();
 
 // Rota para criar uma nova notificação
-roteador.route("/post/:usuario_id").post(
+roteador.route("/post").post(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorNotificacao.create)
     });
@@ -30,7 +30,7 @@ roteador.route("/:id").get(
     });
 
 // Rota para buscar todas as notificações de um usuário
-roteador.route("/getNotifications/:usuario_id").get(
+roteador.route("/getNotifications").get(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorNotificacao.getPorUsuario);
     }

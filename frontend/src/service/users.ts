@@ -15,6 +15,8 @@ export interface LoginResponse {
  * @param id - O ID do usuário a ser atualizado.
  * @param userData - Os dados do usuário a serem atualizados.
  */
+
+// remover parametro id já que estou utilizando o token para puxar o id no backend
 export const updateUser = async (
   id: string,
   userData: { nome?: string; email?: string; senha?: string }
@@ -43,6 +45,8 @@ export const updateUser = async (
  * Deleta um usuário pelo ID.
  * @param id - O ID do usuário a ser deletado.
  */
+
+// remover parametro id já que estou utilizando o token para puxar o id no backend
 export const deleteUser = async (id: string) => {
   try {
     const token = getTokenFromLocalStorage();
@@ -64,7 +68,7 @@ export const deleteUser = async (id: string) => {
  * Recupera os dados de um usuário pelo ID.
  * @param id - O ID do usuário a ser recuperado.
  */
-export const getUser = async (id: string) => {
+export const getUser = async (id: string = '') => {
   try {
     const token = getTokenFromLocalStorage();
     const response = await axios.get(`${entityBaseUrl}/${id}`, {

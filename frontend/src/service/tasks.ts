@@ -11,12 +11,12 @@ const entityBaseUrl = apiBaseUrl + "/tarefas";
  * @param taskData - The task data to be created.
  */
 export const createTask = async (
-    usuarioId: string,
+
     taskData: { titulo: string; meta_tempo?: string; data_termino?: string; em_grupo?: boolean; membros?: string[] }
 ) => {
     try {
         const token = getTokenFromLocalStorage();
-        const response = await axios.post(`${entityBaseUrl}/post/${usuarioId}`, taskData, {
+        const response = await axios.post(`${entityBaseUrl}/post`, taskData, {
             headers: {
                 Authorization: token,
             },
@@ -92,6 +92,44 @@ export const getTask = async (taskId: string) => {
     } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
             throw error.response?.data || new Error("Failed to retrieve task");
+        }
+        throw new Error("An unexpected error occurred");
+    }
+};
+
+export const getTasksByUser = async () => {
+    try {
+        const token = getTokenFromLocalStorage();
+        const response = await axios.get(`${entityBaseUrl}/getTasks`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response.data;
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw error.response?.data || new Error("Failed to retrieve tasks for user");
+        }
+        throw new Error("An unexpected error occurred");
+    }
+};
+
+export const updateTaskStatus = async (taskId: string) => {
+    try {
+        const token = getTokenFromLocalStorage();
+        const response = await axios.patch(
+            `${entityBaseUrl}/updateStatus/${taskId}`,
+            {},
+            {
+                headers: {
+                    Authorization: token,
+                },
+            }
+        );
+        return response.data;
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw error.response?.data || new Error("Failed to update task status");
         }
         throw new Error("An unexpected error occurred");
     }
