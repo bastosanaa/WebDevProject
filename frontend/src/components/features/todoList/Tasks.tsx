@@ -29,7 +29,7 @@ const Tasks:  React.FC<TasksProps> = ({onTaskClick, onAddTask}) => {
                             ))}
                         </ul>
                     </div>
-                    <button className="plus-task absolute inset-x-0 bottom-0 p-4 rounded-lg" onClick={onAddTask}>Adicionar Tarefa</button>
+                    <button className="plus-task relative  inset-x-0 bottom-0 p-4 rounded-lg" onClick={onAddTask}>Adicionar Tarefa</button>
         </div>
     );
 };

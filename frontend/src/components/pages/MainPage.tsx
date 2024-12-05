@@ -56,7 +56,7 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="main-page relative">
+    <div className="main-page">
       <NavBar
         toggleSideBar={toggleSideBar}
         toggleUserInfo={menuToggle}

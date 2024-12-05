@@ -26,16 +26,11 @@ const NavBar: React.FC<NavBarProps> = ({
 
   return (
     <div className="object-none object-top">
-      <div className="upper absolute inset-x-0 top-0 h-16">
+      <div className="upper absolute inset-x-0 top-0 h-16 w-full">
         <div className="user-info">
           <div onClick={toggleUserInfo}>
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
             <span id="username">nome_nome</span>
-          </div>
-          <div className="notif absolute right-20 p-2">
-            <span>
-              <BsBellFill />
-            </span>
           </div>
           <div
             id="menu"
@@ -48,7 +43,10 @@ const NavBar: React.FC<NavBarProps> = ({
             <button onClick={handleLogout}>Sign Out</button>
           </div>
         </div>
-        <img id="title" src={logo} alt="Bloom Logo" className="logo" />
+        <div className="task-pomo block space-x-10">
+          <h1 className="inline"><b>Tarefas</b></h1>
+          <h1 className="inline"><b>Pomo</b></h1>
+        </div>
         <button onClick={toggleSideBar} className="p-5 top-0 right-0" id="hamb">
           <div className="flex flex-col items-center">
             <span className="block w-6 h-1 bg-rosa-escuro mb-1"></span>
