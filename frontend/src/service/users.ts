@@ -109,7 +109,7 @@ export const createUser = async (userData: {
   senha: string;
 }) => {
   try {
-    const response = await axios.post(`${entityBaseUrl}/post`, userData);
+    const response = await axios.post(`${apiBaseUrl}/novousuario/post`, userData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

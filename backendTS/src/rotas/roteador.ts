@@ -24,5 +24,10 @@ roteador.route('/autenticacao/usuarios').post((req: Request, res: Response, next
     tryCatch(req, res, next, controladorUsuario.login);
 });
 
+roteador.route("/novousuario/post").post(
+    (req: Request, res: Response, next: NextFunction) => {
+        tryCatch(req, res, next, controladorUsuario.create)
+    });
+
 export default roteador
 

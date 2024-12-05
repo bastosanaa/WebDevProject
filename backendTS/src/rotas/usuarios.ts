@@ -5,11 +5,6 @@ import tryCatch from "../utils/tryCatch";
 // Criando o roteador do Express
 const roteador = express.Router();
 
-roteador.route("/post").post(
-    (req: Request, res: Response, next: NextFunction) => {
-        tryCatch(req, res, next, controladorUsuario.create)
-    });
-
 roteador.route("/update").patch(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorUsuario.update)
