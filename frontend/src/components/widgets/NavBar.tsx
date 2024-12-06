@@ -48,8 +48,8 @@ const NavBar: React.FC<NavBarProps> = ({
           </div>
         </div>
         <div className="task-pomo block space-x-10">
-          <h1 className={`inline ${task ? 'bg-rosa-escuro text-rosa-claro p-1 rounded': ''}`}><b>Tarefas</b></h1>
-          <h1 className={`inline ${pomo ? 'bg-rosa-escuro text-rosa-claro': ''}`}><b>Pomo</b></h1>
+          <h1 className={`inline ${task ? 'bg-rosa-escuro text-rosa-claro p-1 rounded-lg': ''}`}><b>Tarefas</b></h1>
+          <h1 className={`inline ${pomo ? 'bg-rosa-escuro text-rosa-claro p-1 rounded-lg': ''}`}><b>Pomo</b></h1>
         </div>
         <button onClick={toggleSideBar} className="p-5 top-0 right-0" id="hamb">
           <div className="flex flex-col items-center">

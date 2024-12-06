@@ -1,10 +1,14 @@
 import '../../pages/MainPage.css';
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {createTask} from "../../../service/tasks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const NewTask: React.FC = () => {
+interface NewTaskProps{
+  onClose: () => void;
+}
+
+const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -74,7 +78,7 @@ const NewTask: React.FC = () => {
         {formData.metaTempoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Meta de conclusão:</label>
-                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input"/>
+                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input" name='meta_tempo'/>
             </div>
         )}
 
@@ -86,7 +90,7 @@ const NewTask: React.FC = () => {
         {formData.dataTerminoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Data de término</label>
-                <input type="date" value={formData.dataTermino} onChange={handleChange} className="input"/>
+                <input type="date" value={formData.dataTermino} onChange={handleChange} className="input" name='data_termino'/>
             </div>
         )}
 
@@ -109,7 +113,7 @@ const NewTask: React.FC = () => {
             </div>
         )}
   
-        <button type="submit" className="button" onClick={handleCreateTask}>
+        <button type="submit" className="button" onClick={() => {handleCreateTask; onClose; }}>
           Criar
         </button>
       </form>
