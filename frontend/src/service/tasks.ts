@@ -16,7 +16,7 @@ export const createTask = async (taskData: {
   membros?: string[];
 }) => {
   try {
-    const response = await api.post(`tarefas/post`, taskData);
+    const response = await api.post("tarefas/post", taskData);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
