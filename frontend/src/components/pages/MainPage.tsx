@@ -7,6 +7,7 @@ import Task from "../features/todoList/Task";
 import NewTask from "../features/todoList/NewTask";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import Profile from "../Profile";
 
 const MainPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -25,8 +26,18 @@ const MainPage: React.FC = () => {
   const [isMenuOpen, setisMenuOpen] = useState(false);
   const [taskUpper, setTaskState] = useState(true);
   const [pomoUpper, setPomoState] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
-  const handleTaskClick = (task: { _id: string, titulo: string; usuario_id: string; meta_tempo?: string; data_termino?: string; em_andamento: boolean; em_grupo?: boolean; membros?: string[] }) => {
+  const handleTaskClick = (task: {
+    _id: string;
+    titulo: string;
+    usuario_id: string;
+    meta_tempo?: string;
+    data_termino?: string;
+    em_andamento: boolean;
+    em_grupo?: boolean;
+    membros?: string[];
+  }) => {
     setSelectedTask(task);
     setShowTasks(false);
     setShowNewTask(false);
@@ -63,30 +74,49 @@ const MainPage: React.FC = () => {
   const handleTaskState = () => {
     setTaskState(true);
     setPomoState(false);
-  }
+  };
 
   const handlePomoState = () => {
     setPomoState(true);
     setTaskState(false);
-  }
+  };
+
+  const handleOpenProfile = () => {
+    setIsSideBarOpen(false);
+    setShowNewTask(false);
+    setShowTasks(false);
+    setisMenuOpen(false);
+    setShowProfile(true);
+  };
+
+  const handleCloseProfile = () => {
+    setShowProfile(false);
+    setShowTasks(true);
+  };
 
   return (
     <div className="main-page">
       <NavBar
         toggleSideBar={toggleSideBar}
         toggleUserInfo={menuToggle}
+        onOpenProfile={handleOpenProfile}
         isClicked={isMenuOpen}
-        task ={taskUpper}
-        pomo ={pomoUpper}
+        task={taskUpper}
+        pomo={pomoUpper}
       />
       <SideBar isOpen={isSideBarOpen} />
       {showTasks && !showNewTask && (
-        <Tasks onTaskClick={handleTaskClick} onAddTask={handleAddTask} isSideBarOpen={isSideBarOpen}/>
+        <Tasks
+          onTaskClick={handleTaskClick}
+          onAddTask={handleAddTask}
+          isSideBarOpen={isSideBarOpen}
+        />
       )}
 
       {selectedTask && <Task task={selectedTask} onClose={handleCloseDetail} />}
 
       {showNewTask && <NewTask onClose={handleCloseNewTask} />}
+      {showProfile && <Profile onClose={handleCloseProfile} />}
     </div>
   );
 };

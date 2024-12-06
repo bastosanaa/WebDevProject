@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
     console.log("error", error);
     if (
       error.response?.status === 401 &&
-      error.response.data?.error === "TokenExpired"
+      error.response.data?.msg?.includes("Token")
     ) {
       localStorage.removeItem("token");
       window.location.href = "/login";

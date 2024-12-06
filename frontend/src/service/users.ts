@@ -14,12 +14,13 @@ export interface LoginResponse {
  */
 
 // remover parametro id já que estou utilizando o token para puxar o id no backend
-export const updateUser = async (
-  id: string,
-  userData: { nome?: string; email?: string; senha?: string }
-) => {
+export const updateUser = async (userData: {
+  nome?: string;
+  email?: string;
+  senha?: string;
+}) => {
   try {
-    const response = await api.patch(`usuarios/update/${id}`, userData);
+    const response = await api.patch("usuarios/update", userData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
