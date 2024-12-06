@@ -68,10 +68,10 @@ export const deleteUser = async (id: string) => {
  * Recupera os dados de um usuário pelo ID.
  * @param id - O ID do usuário a ser recuperado.
  */
-export const getUser = async (id: string = '') => {
+export const getUser = async () => {
   try {
     const token = getTokenFromLocalStorage();
-    const response = await axios.get(`${entityBaseUrl}/${id}`, {
+    const response = await axios.get(`${entityBaseUrl}/getUsuario`, {
       headers: {
         Authorization: token, // Passando o token sem o "Bearer"
       },

@@ -25,7 +25,7 @@ roteador.route("/addAmigo").patch(
         (req: Request, res: Response, next: NextFunction) => {
             tryCatch(req, res, next, controladorUsuario.removeAmigo)
         });
-roteador.route("/:id").get(
+roteador.route("/getUsuario").get(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorUsuario.get)
     });

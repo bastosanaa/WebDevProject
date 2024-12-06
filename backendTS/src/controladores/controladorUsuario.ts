@@ -81,8 +81,7 @@ const controladorUsuario = {
     },
     //continua recebendo parametro de usuario (talvez precise arrumar pois nao sei se da para nao passar parametro)
     get: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.params ? req.params : req.usuario_id
-        
+        const { id } = req.usuario_id
 
         const usuario = await Usuario.findById(id)
 
