@@ -18,23 +18,26 @@ const MainPage: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  const [selectedTask, setSelectedTask] = useState<string | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [showTasks, setShowTasks] = useState<boolean>(true);
   const [showNewTask, setShowNewTask] = useState<boolean>(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isMenuOpen, setisMenuOpen] = useState(false);
-  const [task, pomo] = useState(false);
+  const [taskUpper, setTaskState] = useState(true);
+  const [pomoUpper, setPomoState] = useState(false);
 
-  const handleTaskClick = (task: string) => {
+  const handleTaskClick = (task: { _id: string, titulo: string; usuario_id: string; meta_tempo?: string; data_termino?: string; em_andamento: boolean; em_grupo?: boolean; membros?: string[] }) => {
     setSelectedTask(task);
     setShowTasks(false);
     setShowNewTask(false);
+    handlePomoState();
   };
 
   const handleCloseDetail = () => {
     setSelectedTask(null);
     setShowTasks(true);
     setShowNewTask(false);
+    handleTaskState();
   };
 
   const handleAddTask = () => {
@@ -46,6 +49,7 @@ const MainPage: React.FC = () => {
   const handleCloseNewTask = () => {
     setShowNewTask(false);
     setShowTasks(true);
+    handleTaskState();
   };
 
   const toggleSideBar = () => {
@@ -56,14 +60,24 @@ const MainPage: React.FC = () => {
     setisMenuOpen((prevState) => !prevState);
   };
 
+  const handleTaskState = () => {
+    setTaskState(true);
+    setPomoState(false);
+  }
+
+  const handlePomoState = () => {
+    setPomoState(true);
+    setTaskState(false);
+  }
+
   return (
     <div className="main-page">
       <NavBar
         toggleSideBar={toggleSideBar}
         toggleUserInfo={menuToggle}
         isClicked={isMenuOpen}
-        task={true}
-        pomo={false}
+        task ={taskUpper}
+        pomo ={pomoUpper}
       />
       <SideBar isOpen={isSideBarOpen} />
       {showTasks && !showNewTask && (

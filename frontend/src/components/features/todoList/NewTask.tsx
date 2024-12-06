@@ -1,10 +1,14 @@
 import '../../pages/MainPage.css';
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {createTask} from "../../../service/tasks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const NewTask: React.FC = () => {
+interface NewTaskProps{
+  onClose: () => void;
+}
+
+const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -17,8 +21,8 @@ const NewTask: React.FC = () => {
         membros: [] as string[]
     });
 
-    const handleCreateTask = async (e: React.FormEvent) => {
-      e.preventDefault();
+    const handleCreateTask = async (event?: React.FormEvent) => {
+      event?.preventDefault();
       try{
         await createTask({
           titulo: formData.titulo,
@@ -26,15 +30,16 @@ const NewTask: React.FC = () => {
           data_termino: formData.dataTermino,
           membros: formData.membros,
         });
-        navigate("/");
         toast.success('Tarefa criada com sucesso!');
+        navigate("/");
+        onClose();
       } catch (error) {
         console.error('Erro:', error);
         alert('Ocorreu um erro ao criar a tarefa');
       };
     };
 
-    const handleCheckboxChange = (field: string) => {
+    const handleCheckboxChange = (field: keyof typeof formData) => {
         setFormData(prevState => ({
             ...prevState,
             [field]: !prevState[field]
@@ -74,7 +79,7 @@ const NewTask: React.FC = () => {
         {formData.metaTempoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Meta de conclusão:</label>
-                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input"/>
+                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input" name='metaTempo'/>
             </div>
         )}
 
@@ -86,7 +91,7 @@ const NewTask: React.FC = () => {
         {formData.dataTerminoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Data de término</label>
-                <input type="date" value={formData.dataTermino} onChange={handleChange} className="input"/>
+                <input type="date" value={formData.dataTermino} onChange={handleChange} className="input" name='data_termino'/>
             </div>
         )}
 
