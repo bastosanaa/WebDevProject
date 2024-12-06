@@ -1,8 +1,5 @@
 import axios from "axios";
-import { apiBaseUrl } from "./serviceConsts";
-import { getTokenFromLocalStorage } from "../utils/getTokenFromLocalStorage";
-
-const entityBaseUrl = apiBaseUrl + "/usuarios";
+import api from "./axiosInstance";
 
 export interface LoginResponse {
   auth: boolean;
@@ -22,16 +19,7 @@ export const updateUser = async (
   userData: { nome?: string; email?: string; senha?: string }
 ) => {
   try {
-    const token = getTokenFromLocalStorage();
-    const response = await axios.patch(
-      `${entityBaseUrl}/update/${id}`,
-      userData,
-      {
-        headers: {
-          Authorization: token, // Passando o token sem o "Bearer"
-        },
-      }
-    );
+    const response = await api.patch(`usuarios/update/${id}`, userData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -49,12 +37,7 @@ export const updateUser = async (
 // remover parametro id já que estou utilizando o token para puxar o id no backend
 export const deleteUser = async (id: string) => {
   try {
-    const token = getTokenFromLocalStorage();
-    const response = await axios.delete(`${entityBaseUrl}/delete/${id}`, {
-      headers: {
-        Authorization: token, // Passando o token sem o "Bearer"
-      },
-    });
+    const response = await api.delete(`usuarios/delete/${id}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -70,12 +53,7 @@ export const deleteUser = async (id: string) => {
  */
 export const getUser = async () => {
   try {
-    const token = getTokenFromLocalStorage();
-    const response = await axios.get(`${entityBaseUrl}/getUsuario`, {
-      headers: {
-        Authorization: token, // Passando o token sem o "Bearer"
-      },
-    });
+    const response = await api.get(`usuarios/getUsuario`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -90,10 +68,7 @@ export const loginUser = async (credentials: {
   senha: string;
 }) => {
   try {
-    const response = await axios.post(
-      `${apiBaseUrl}/autenticacao/usuarios`,
-      credentials
-    );
+    const response = await api.post("autenticacao/usuarios", credentials);
     return response.data as LoginResponse;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -109,7 +84,7 @@ export const createUser = async (userData: {
   senha: string;
 }) => {
   try {
-    const response = await axios.post(`${apiBaseUrl}/novousuario/post`, userData);
+    const response = await api.post("novousuario/post", userData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
