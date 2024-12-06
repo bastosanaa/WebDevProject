@@ -15,10 +15,6 @@ roteador.route("/delete").delete(
         tryCatch(req, res, next, controladorUsuario.delete)
     });
 
-roteador.route("/:id").get(
-    (req: Request, res: Response, next: NextFunction) => {
-        tryCatch(req, res, next, controladorUsuario.get)
-    });
 
 roteador.route("/addAmigo").patch(
     (req: Request, res: Response, next: NextFunction) => {
@@ -29,5 +25,9 @@ roteador.route("/addAmigo").patch(
         (req: Request, res: Response, next: NextFunction) => {
             tryCatch(req, res, next, controladorUsuario.removeAmigo)
         });
+roteador.route("/:id").get(
+    (req: Request, res: Response, next: NextFunction) => {
+        tryCatch(req, res, next, controladorUsuario.get)
+    });
 
 export default roteador;
