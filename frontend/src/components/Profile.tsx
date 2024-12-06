@@ -8,10 +8,10 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ onClose }) => {
   const [editUserVisible, setEditUserVisible] = useState(false);
   return (
-    <div className="relative w-full flex flex-col gap-4 max-w-lg p-12 rounded-2xl shadow bg-neutral-200">
-      <h1>Hi</h1>
+    <div className="relative w-full max-w-screen-md flex flex-col gap-4 p-12 rounded-2xl shadow bg-neutral-200">
+      <h1>Perfil:</h1>
       {!editUserVisible && (
-        <button onClick={() => setEditUserVisible(true)}>
+        <button onClick={() => setEditUserVisible(true)} className="button">
           Editar Cadastro
         </button>
       )}

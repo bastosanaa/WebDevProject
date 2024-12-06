@@ -23,6 +23,11 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
       console.log("err", err);
     }
   };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    onClose();
+  };
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 min-w-96">
       <div className="flex flex-col gap-1">
@@ -58,10 +63,17 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
           }
         />
       </div>
-
-      <button type="submit" className="button mt-8">
-        Save
-      </button>
+      <div className="flex gap-4 w-full mt-8 ">
+        <button
+          className="button !bg-rosa-escuro opacity-60 w-full"
+          onClick={handleCancel}
+        >
+          Cancelar
+        </button>
+        <button type="submit" className="button w-full">
+          Salvar
+        </button>
+      </div>
     </form>
   );
 };

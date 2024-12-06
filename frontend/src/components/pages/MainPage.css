@@ -27,11 +27,11 @@
   position: absolute;
 }
 
-.upper #hamb{
+.upper #hamb {
   position: absolute;
 }
 
-.upper #menu{
+.upper #menu {
   transition: transform 0.3s ease;
   font-size: 70%;
   padding: 5px;
@@ -74,7 +74,7 @@
   margin-bottom: 10vh;
 }
 
-.tasks.shrink{
+.tasks.shrink {
   transform: translatex(-10vh);
   transition: transform 0.3s ease-in-out;
 }
@@ -115,7 +115,7 @@
   width: 150%;
 }
 
-.titulo{
+.titulo {
   font-size: 125%;
 }
 
