@@ -18,7 +18,7 @@ const MainPage: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [showTasks, setShowTasks] = useState<boolean>(true);
   const [showNewTask, setShowNewTask] = useState<boolean>(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -26,7 +26,7 @@ const MainPage: React.FC = () => {
   const [taskUpper, setTaskState] = useState(true);
   const [pomoUpper, setPomoState] = useState(false);
 
-  const handleTaskClick = (task: { titulo: string; meta_tempo?: string; data_termino?: string; em_grupo?: boolean; membros?: string[] }) => {
+  const handleTaskClick = (task: { _id: string, titulo: string; usuario_id: string; meta_tempo?: string; data_termino?: string; em_andamento: boolean; em_grupo?: boolean; membros?: string[] }) => {
     setSelectedTask(task);
     setShowTasks(false);
     setShowNewTask(false);

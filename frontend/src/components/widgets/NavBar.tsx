@@ -1,9 +1,9 @@
 import "../pages/MainPage.css";
 import "./SideBar.tsx";
-import { BsBellFill } from "react-icons/bs";
-import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {getUser} from "../../service/users";
 
 interface NavBarProps {
   toggleSideBar: () => void;
@@ -11,6 +11,12 @@ interface NavBarProps {
   isClicked: boolean;
   task: boolean;
   pomo: boolean;
+}
+
+interface User{
+  _id: string;
+  nome: string;
+  email: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
@@ -22,11 +28,25 @@ const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
+
+  const getLoggedUser = async () => {
+    try {
+      const response = await getUser();
+      setUser(response);
+    } catch (err) {
+      console.log('Erro ao puxar usuário:', user);
+    }
+  };
+
+  useEffect(() => {
+    getLoggedUser();
+  }, []);
 
   return (
     <div className="object-none object-top">
@@ -34,7 +54,7 @@ const NavBar: React.FC<NavBarProps> = ({
         <div className="user-info">
           <div onClick={toggleUserInfo}>
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
-            <span id="username">nome_nome</span>
+            <span id="username">{user ? user.nome : 'Carregando...'}</span>
           </div>
           <div
             id="menu"

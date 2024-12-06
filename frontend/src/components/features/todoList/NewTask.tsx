@@ -21,8 +21,8 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
         membros: [] as string[]
     });
 
-    const handleCreateTask = async (e: React.FormEvent) => {
-      e.preventDefault();
+    const handleCreateTask = async (event?: React.FormEvent) => {
+      event?.preventDefault();
       try{
         await createTask({
           titulo: formData.titulo,
@@ -30,15 +30,16 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
           data_termino: formData.dataTermino,
           membros: formData.membros,
         });
-        navigate("/");
         toast.success('Tarefa criada com sucesso!');
+        navigate("/");
+        onClose();
       } catch (error) {
         console.error('Erro:', error);
         alert('Ocorreu um erro ao criar a tarefa');
       };
     };
 
-    const handleCheckboxChange = (field: string) => {
+    const handleCheckboxChange = (field: keyof typeof formData) => {
         setFormData(prevState => ({
             ...prevState,
             [field]: !prevState[field]
@@ -78,7 +79,7 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
         {formData.metaTempoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Meta de conclusão:</label>
-                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input" name='meta_tempo'/>
+                <input type="text" value={formData.metaTempo} onChange={handleChange} className="input" name='metaTempo'/>
             </div>
         )}
 
@@ -113,7 +114,7 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
             </div>
         )}
   
-        <button type="submit" className="button" onClick={() => {handleCreateTask; onClose; }}>
+        <button type="submit" className="button" onClick={handleCreateTask}>
           Criar
         </button>
       </form>
