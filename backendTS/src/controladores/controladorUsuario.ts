@@ -81,12 +81,15 @@ const controladorUsuario = {
     },
     //continua recebendo parametro de usuario (talvez precise arrumar pois nao sei se da para nao passar parametro)
     get: async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.usuario_id
+        const id  = req.usuario_id
+        console.log(id);
+        
 
-        const usuario = await Usuario.findById(id)
-
+        const usuario = await Usuario.findById(id).select("-senha")
+        console.log(usuario);
+        
         if (!usuario) {
-            res.status(404).json({ msg: "usuario não encontrada" });
+            res.status(404).json({ msg: "usuario não encontrado" });
             return;
         }
         res.status(200).json({ usuario: usuario, msg: "usuario encontrada com sucesso"})
