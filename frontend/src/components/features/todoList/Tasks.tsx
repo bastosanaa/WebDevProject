@@ -1,21 +1,35 @@
 import '../../pages/MainPage.css';
-import React, { useState } from "react";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { BsCheckLg } from "react-icons/bs";
-import { BsPencilSquare } from "react-icons/bs";
-
+import React, { useEffect, useState } from "react";
+import { BsFillTrash3Fill, BsCheckLg, BsPencilSquare } from "react-icons/bs";
+import {getTask, getTasksByUser} from "../../../service/tasks";
 
 interface TasksProps {
     onTaskClick: (task: string) => void;
     onAddTask: () => void;
+    isSideBarOpen: boolean;
 }
 
-const Tasks:  React.FC<TasksProps> = ({onTaskClick, onAddTask}) => {
+const Tasks:  React.FC<TasksProps> = ({onTaskClick, onAddTask, isSideBarOpen}) => {
+    const [tasks, setTasks] = useState([]);
+
+    const getTasks = async () =>{
+        try {
+            const response = await getTasksByUser()
+            setTasks(response)
+        } catch (err) {
+            console.log("Erro ao puxar tarefas do usuário: ");
+        };
+    };
+
+    useEffect(() => {
+        getTasks();
+    }, []);
+
     return (
-        <div className="tasks w-full">
-                    <div className="tasks-group scale-125 overflow-y-auto h-80 rounded-2xl">
+        <div className={`tasks w-full space-y-16 ${isSideBarOpen ? 'shrink' : ' '}`}>
+                    <div className="tasks-group scale-125 overflow-y-auto h-80 rounded-2xl m-0">
                         <ul>
-                            {['Tarefa 1', 'Tarefa 2', 'Tarefa 3', 'Tarefa 4', 'Tarefa 5', 'Tarefa 6'].map((task) => (
+                            {tasks.map((task) => (
                                 <li key={task} className="flex justify-between items-center">
                                     <button className="p-4" onClick={() => onTaskClick(task)}>
                                         {task}
@@ -29,7 +43,7 @@ const Tasks:  React.FC<TasksProps> = ({onTaskClick, onAddTask}) => {
                             ))}
                         </ul>
                     </div>
-                    <button className="plus-task relative  inset-x-0 bottom-0 p-4 rounded-lg" onClick={onAddTask}>Adicionar Tarefa</button>
+                    <button className="plus-task relative inset-x-0 bottom-0 p-4 rounded-lg" onClick={onAddTask}>Adicionar Tarefa</button>
         </div>
     );
 };

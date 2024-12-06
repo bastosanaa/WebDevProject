@@ -1,13 +1,12 @@
 import '../../pages/MainPage.css';
 import React, { useEffect, useState } from "react";
 import {createTask} from "../../../service/tasks";
-import {getUser} from "../../../service/users";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-interface NewTaskProps {
-    onClose: () => void;
-}
+const NewTask: React.FC = () => {
+    const navigate = useNavigate();
 
-const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
     const [formData, setFormData] = useState({
         titulo: '',
         metaTempoChecked: false,
@@ -15,43 +14,20 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
         dataTerminoChecked: false,
         dataTermino: '',
         emGrupoChecked: false,
-        membros: []
+        membros: [] as string[]
     });
-
-    const [usuarioId, setUsuarioId] = useState(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const user = await getUser('674f9f89c12add41cb2c902a');
-                setUsuarioId(user);
-                console.log(user);
-            } catch (error) {
-                console.error('Erro ao buscar o usuário:', error);
-            }
-        };
-
-        fetchUser();
-    }, []);
 
     const handleCreateTask = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!usuarioId) {
-        alert(`Usuário não encontrado ${usuarioId}`);
-        return;
-      }
-
       try{
-        await createTask(usuarioId, {
+        await createTask({
           titulo: formData.titulo,
           meta_tempo: formData.metaTempo,
           data_termino: formData.dataTermino,
           membros: formData.membros,
         });
-        alert('Tarefa criada com sucesso!');
-        setTimeout(() =>{
-          onClose();
-        }, 5000);
+        navigate("/");
+        toast.success('Tarefa criada com sucesso!');
       } catch (error) {
         console.error('Erro:', error);
         alert('Ocorreu um erro ao criar a tarefa');
@@ -73,11 +49,21 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
         }));
     };
 
+    const handleAddMember = () => {
+      const newMember = prompt("Digite o usuário do membro:");
+      if (newMember) {
+        setFormData(prevState => ({
+          ...prevState,
+          membros: [...prevState.membros, newMember]
+        }));
+      }
+    };
+
     return (
       <form className="new-task flex flex-col gap-4 min-w-full p-4 rounded-2xl">
         <div className="flex flex-col gap-1">
           <label className="label">Título da Tarefa</label>
-          <input type="text" value={formData.titulo} onChange={handleChange} className="input" name="titulo"/>
+          <input type="text" value={formData.titulo} onChange={handleChange} className="input" name="titulo" required/>
         </div>
   
         <div className="flex flex-col gap-1">
@@ -112,7 +98,14 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
         {formData.emGrupoChecked && (
             <div className="flex flex-col gap-1">
                 <label className='label'>Membros:</label>
-                <input type="text" value={formData.membros} onChange={handleChange} className="input"/>
+                <div className="flex flex-col gap-1">
+                  <button type="button" onClick={handleAddMember} className='button'>Adicionar Membro</button>
+                  <ul>
+                    {formData.membros.map((membro, index) => (
+                      <li key={index}>{membro}</li>
+                      ))}
+                  </ul>
+                </div>
             </div>
         )}
   

@@ -4,8 +4,6 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  padding: auto;
-  gap: 28px;
   @apply text-rosa-escuro;
 }
 
@@ -65,9 +63,20 @@
 }
 
 .tasks {
-  margin-top: 90px;
-  margin-right: 300px;
-  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 10vh;
+  margin-right: 10vh;
+  margin-bottom: 10vh;
+  width: 1000px;
+}
+
+.tasks.shrink{
+  transform: translatex(-10vh);
+  transition: transform 0.3s ease-in-out;
 }
 
 .tasks-group {
@@ -75,7 +84,7 @@
   opacity: 0.9;
   text-align: left;
   width: 150%;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
   scrollbar-width: inherit;
   scrollbar-color: #d78794 transparent;
 }

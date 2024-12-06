@@ -23,6 +23,7 @@ const MainPage: React.FC = () => {
   const [showNewTask, setShowNewTask] = useState<boolean>(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isMenuOpen, setisMenuOpen] = useState(false);
+  const [task, pomo] = useState(false);
 
   const handleTaskClick = (task: string) => {
     setSelectedTask(task);
@@ -61,10 +62,12 @@ const MainPage: React.FC = () => {
         toggleSideBar={toggleSideBar}
         toggleUserInfo={menuToggle}
         isClicked={isMenuOpen}
+        task={true}
+        pomo={false}
       />
       <SideBar isOpen={isSideBarOpen} />
       {showTasks && !showNewTask && (
-        <Tasks onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
+        <Tasks onTaskClick={handleTaskClick} onAddTask={handleAddTask} isSideBarOpen={isSideBarOpen}/>
       )}
 
       {selectedTask && <Task task={selectedTask} onClose={handleCloseDetail} />}
