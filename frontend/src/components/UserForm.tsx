@@ -63,7 +63,7 @@ const UserForm: React.FC<UserFormProps> = ({ onClose }) => {
           }
         />
       </div>
-      <div className="flex gap-4 w-full mt-8 ">
+      <div className="flex gap-4 w-full">
         <button
           className="button !bg-rosa-escuro opacity-60 w-full"
           onClick={handleCancel}

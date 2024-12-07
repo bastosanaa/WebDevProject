@@ -23,17 +23,17 @@ const NotificationList: React.FC = () => {
     fetchNotificaitons();
   }, []);
 
-  const handleAddFriend = (n: Notification) => {
-    updateStatus(n._id, "aceito");
+  const handleFriendRequest = (n: Notification, accept: boolean) => {
+    updateStatus(n._id, accept ? "aceito" : "recusado");
     setNotifications(
       notifications.filter((notification) => n._id !== notification._id)
     );
-    toast("Aceito!!");
+    toast(accept ? "Aceito!!" : "Recusado!!");
   };
 
   return (
-    <div className="flex flex-col text-start gap-2">
-      {friendRequests.length > 0 && (
+    <div className="flex flex-col gap-2">
+      {friendRequests.length > 0 ? (
         <>
           <h3 className="text-xl">Pedidos de amizade:</h3>
           <ul className="flex flex-col gap-2">
@@ -43,15 +43,22 @@ const NotificationList: React.FC = () => {
                 <span className="font-semibold">{n.remetente.nome}</span>
                 <button
                   className="button ml-3"
-                  onClick={() => handleAddFriend(n)}
+                  onClick={() => handleFriendRequest(n, true)}
                 >
                   Aceitar
                 </button>
-                <button className="button">Recusar</button>
+                <button
+                  className="button"
+                  onClick={() => handleFriendRequest(n, false)}
+                >
+                  Recusar
+                </button>
               </li>
             ))}
           </ul>
         </>
+      ) : (
+        <span className="text-sm">Sem notificações!</span>
       )}
       {groupInvites.length > 0 && (
         <>
