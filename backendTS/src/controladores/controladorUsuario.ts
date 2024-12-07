@@ -26,10 +26,21 @@ const controladorUsuario = {
             experiencia: 0,
             amigos: []
         };
+        const nomeUsuarioEmUso = await Usuario.find({ nome: usuario.nome });
+        if (nomeUsuarioEmUso.length > 0) {
+            res.status(400).json({ 
+        msg: "Nome de usuário em uso", 
+        errorCode: "USERNAME_IN_USE" 
+    });
+            return;
+        }
 
         const usuarioRegistrado = await Usuario.find({ email: usuario.email });
         if (usuarioRegistrado.length > 0) {
-            res.status(400).json({ msg: "Usuário já existente" });
+            res.status(400).json({ 
+        msg: "Email já Cadastrado", 
+        errorCode: "EMAIL_ALREADY_REGISTERED" 
+    });
             return;
         }
 
