@@ -41,12 +41,16 @@ const NavBar: React.FC<NavBarProps> = ({
           </div>
           <div
             id="menu"
-            className={`mt-6 absolute flex flex-col gap-4 bg-branco transition-transform duration-300 ${
+            className={`mt-6 absolute flex flex-col gap-4 p-3 text-xl bg-branco rounded-xl transition-transform duration-300 ${
               isClicked ? "translate-y-10" : "hidden translate-y-0"
             }`}
           >
-            <button onClick={onOpenProfile}>Perfil</button>
-            <button onClick={handleLogout}>Sign Out</button>
+            <button className="hover:opacity-70" onClick={onOpenProfile}>
+              Perfil
+            </button>
+            <button className="hover:opacity-70" onClick={handleLogout}>
+              Deslogar
+            </button>
           </div>
         </div>
         <div className="task-pomo block space-x-10">
