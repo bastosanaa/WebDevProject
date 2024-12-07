@@ -18,7 +18,7 @@ export interface Notification {
 export interface CreateNotificationParams {
   destinatarioEmail: string;
   mensagem: string;
-  tipo: "convite_amizade" | "convite_tarefa_grupo";
+  tipo: Notification["tipo"];
 }
 export const createNotification = async (params: CreateNotificationParams) => {
   try {
@@ -48,6 +48,27 @@ export interface GetNotificationsResponse {
 export const getNotifications = async () => {
   try {
     const response = await api.get("notificacoes/getNotifications");
+    return response.data as GetNotificationsResponse;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to get notifications");
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export interface UpdateStatusParams {
+  status: "pendente" | "aceito" | "recusado";
+}
+export const updateStatus = async (
+  id: string,
+  status: Notification["status"]
+) => {
+  try {
+    const response = await api.patch(`notificacoes/updateStatus/${id}`, {
+      status,
+    });
+    console.log("response", response);
     return response.data as GetNotificationsResponse;
   } catch (error) {
     if (axios.isAxiosError(error)) {

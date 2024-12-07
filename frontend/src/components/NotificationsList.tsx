@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { getNotifications, Notification } from "../service/notifications";
+import {
+  getNotifications,
+  Notification,
+  updateStatus,
+} from "../service/notifications";
 import { toast } from "react-toastify";
 
 const NotificationList: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const friendRequests = notifications.filter(
-    (n) => n.tipo === "convite_amizade"
+    (n) => n.tipo === "convite_amizade" && n.status === "pendente"
   );
   const groupInvites = notifications.filter(
-    (n) => n.tipo === "convite_tarefa_grupo"
+    (n) => n.tipo === "convite_tarefa_grupo" && n.status === "pendente"
   );
 
   useEffect(() => {
@@ -19,7 +23,11 @@ const NotificationList: React.FC = () => {
     fetchNotificaitons();
   }, []);
 
-  const handleAddFriend = () => {
+  const handleAddFriend = (n: Notification) => {
+    updateStatus(n._id, "aceito");
+    setNotifications(
+      notifications.filter((notification) => n._id !== notification._id)
+    );
     toast("Aceito!!");
   };
 
@@ -33,7 +41,10 @@ const NotificationList: React.FC = () => {
               <li className="flex gap-1 items-center" key={n._id}>
                 Pedido de amizade de
                 <span className="font-semibold">{n.remetente.nome}</span>
-                <button className="button ml-3" onClick={handleAddFriend}>
+                <button
+                  className="button ml-3"
+                  onClick={() => handleAddFriend(n)}
+                >
                   Aceitar
                 </button>
                 <button className="button">Recusar</button>
