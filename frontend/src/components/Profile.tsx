@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UserForm from "./UserForm";
 import AddFriendForm from "./AddFriendForm";
+import NotificationList from "./NotificationsList";
 
 interface ProfileProps {
   onClose: () => void;
@@ -31,6 +32,11 @@ const Profile: React.FC<ProfileProps> = ({ onClose }) => {
       {editUserVisible && (
         <UserForm onClose={() => setEditUserVisible(false)} />
       )}
+
+      <div className="flex flex-col gap-2">
+        <h2 className="text-xl">Notificações:</h2>
+        <NotificationList />
+      </div>
       <button className="absolute top-0 right-0 p-4" onClick={onClose}>
         <b>X</b>
       </button>

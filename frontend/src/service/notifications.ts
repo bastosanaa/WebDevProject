@@ -1,6 +1,20 @@
 import axios from "axios";
 import api from "./axiosInstance";
 
+export interface Notification {
+  createdAt: string;
+  destinatario: string;
+  mensagem: string;
+  remetente: {
+    _id: string;
+    nome: string;
+  };
+  status: "pendente" | "aceito" | "recusado";
+  tipo: "convite_amizade" | "convite_tarefa_grupo";
+  updatedAt: string;
+  _id: string;
+}
+
 export interface CreateNotificationParams {
   destinatarioEmail: string;
   mensagem: string;
@@ -24,4 +38,21 @@ export const sendAddFriendReq = async (email: string) => {
     mensagem: "",
     tipo: "convite_amizade",
   });
+};
+
+export interface GetNotificationsResponse {
+  msg: string;
+  notificacoes: Notification[];
+}
+
+export const getNotifications = async () => {
+  try {
+    const response = await api.get("notificacoes/getNotifications");
+    return response.data as GetNotificationsResponse;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to get notifications");
+    }
+    throw new Error("An unexpected error occurred");
+  }
 };
