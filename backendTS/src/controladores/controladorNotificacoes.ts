@@ -2,28 +2,38 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { Notificacao } from '../modelos/Notificacao'; // Modelo de Notificação
 import controladorUsuario from './controladorUsuario';
+import { Usuario } from '../modelos/Usuario';
 
 const controladorNotificacao = {
 
     create: async (req: Request, res: Response): Promise<void> => {
-        const { destinatario, tipo, mensagem } = req.body;
+        const { destinatarioEmail, tipo, mensagem } = req.body;
         const remetente = req.usuario_id;
 
         // Verificação dos campos obrigatórios
-        if (!remetente || !destinatario || !tipo) {
-            res.status(400).json({ msg: "Remetente, destinatário e tipo são obrigatórios" });
+        if (!remetente || !destinatarioEmail || !tipo) {
+            res.status(400).json({ msg: "Destinatário e tipo são obrigatórios" });
             return;
         }
 
         // Verificando se os IDs são válidos
-        if (!mongoose.Types.ObjectId.isValid(remetente) || !mongoose.Types.ObjectId.isValid(destinatario)) {
-            res.status(400).json({ msg: "IDs de remetente ou destinatário inválidos" });
+        if (!mongoose.Types.ObjectId.isValid(remetente)) {
+            res.status(400).json({ msg: "IDs de remetente inválido" });
             return;
         }
 
+        // Verificando se o destinatário existe
+        const usuarioRegistrado = await Usuario.findOne({ email: destinatarioEmail });
+        if (!usuarioRegistrado) {
+            res.status(400).json({ msg: `Usuario não encontrado com email: ${destinatarioEmail}`});
+            return;
+        }
+
+        const destinatario = usuarioRegistrado._id
+
         const notificacao = new Notificacao({
             remetente: new mongoose.Types.ObjectId(remetente),
-            destinatario: new mongoose.Types.ObjectId(destinatario),
+            destinatario: destinatario,
             tipo,
             mensagem,
             status: "pendente", // Status inicial da notificação

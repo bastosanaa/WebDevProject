@@ -71,14 +71,12 @@ const controladorUsuario = {
     },
 
     update: async (req: Request, res: Response): Promise<void> => {
-        const { nome, email, senha } = req.body;
+        const { nome, email } = req.body;
         const id = req.usuario_id;
 
         const usuario = {
             nome,
-            email,
-            senha: await hashSenha(senha),
-            amigos: []
+            email
         };
 
         const usuarioAtualizado = await Usuario.findByIdAndUpdate(id, usuario, { new: true });
@@ -88,7 +86,16 @@ const controladorUsuario = {
             return;
         }
 
-        res.status(200).json({ usuario, msg: "Usuário atualizado com sucesso" });
+
+        const payload = {
+            usuario_id: usuarioAtualizado._id,
+            usuario_nome: usuarioAtualizado.nome,
+            usuario_email: usuarioAtualizado.email
+        };
+
+        const token = jwt.sign(payload, process.env.SEGREDO as string, { expiresIn: '1h' });
+
+        res.status(200).json({ usuario, msg: "Usuário atualizado com sucesso", token });
     },
     //continua recebendo parametro de usuario (talvez precise arrumar pois nao sei se da para nao passar parametro)
     get: async (req: Request, res: Response): Promise<void> => {
