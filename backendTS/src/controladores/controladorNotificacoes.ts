@@ -132,13 +132,15 @@ const controladorNotificacao = {
 
         // Se for um convite de amizade e o status for aceito, adicionar como amigo
         if (notificacao.tipo === "convite_amizade" && status === "aceito") {
-        await chamarAddAmigo(
-            notificacao.remetente.toString(),
-            notificacao.destinatario.toString(), 
-            res
-        );
-        return;
-    }
+            await chamarAddAmigo(
+                notificacao.remetente.toString(),
+                notificacao.destinatario.toString(), 
+                res
+            );
+            notificacao.status = status;
+            await notificacao.save();
+            return;
+        }
 
         notificacao.status = status;
         await notificacao.save();

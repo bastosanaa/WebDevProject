@@ -1,7 +1,16 @@
 import axios from "axios";
 import api from "./axiosInstance";
+import { User } from "../contexts/AuthContext";
 
 // Service functions
+
+export interface Task {
+  data_termino: string | null;
+  em_andamento: boolean;
+  membros: User[];
+  meta_tempo: number | string;
+  titulo: string;
+}
 
 /**
  * Create a new task for a specific user.
