@@ -94,3 +94,23 @@ export const createUser = async (userData: {
     throw new Error("An unexpected error occurred");
   }
 };
+
+/**
+ * Deleta um amigo pelo ID.
+ * @param friendId - O ID do amigo a ser deletado.
+ */
+
+// remover parametro id já que estou utilizando o token para puxar o id no backend
+export const deleteFriend = async (friendId: string) => {
+  try {
+    const response = await api.patch('usuarios/removeAmigo', {
+      friendId,
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to delete user");
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};

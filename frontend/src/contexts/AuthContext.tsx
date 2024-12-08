@@ -1,10 +1,16 @@
 import React, { createContext, useState, ReactNode } from "react";
 import { getUser } from "../service/users";
 
+export interface Amigo {
+  _id: string;
+  nome: string;
+}
+
 export interface User {
   _id: string;
   nome: string;
   email: string;
+  amigos: Amigo[]
 }
 
 // Define types for the context

@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { createTask } from "../../../service/tasks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth.tsx";
 import Task from "./Task";
 
 interface TaskFormProps {
   onClose: () => void;
-  user: {amigos: string[]};
 }
 
 // const initialTaskState: Task = {
@@ -18,8 +18,9 @@ interface TaskFormProps {
 //   membros: [] as string[],
 // };
 
-const TaskForm: React.FC<TaskFormProps> = ({ onClose, user }) => {
+const CreateTaskForm: React.FC<TaskFormProps> = ({ onClose}) => {
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const [showDataTermino, setShowDataTermino] = useState(false);
 
@@ -79,10 +80,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose, user }) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNewMember(value);
-    if (value) {
-      const filtered = user.amigos.filter((amigo) => 
-      amigo.toLowerCase().includes(value.toLocaleLowerCase())
-    );
+    if (value && auth.user && Array.isArray(auth.user.amigos)) {
+      const filtered = auth.user.amigos.filter((amigo) => 
+      amigo.nome.toLowerCase().includes(value.toLocaleLowerCase())
+      ).map((amigo) => amigo.nome);
     setFilteredFriends(filtered);
     } else {
       setFilteredFriends([]);
@@ -173,4 +174,4 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose, user }) => {
   );
 };
 
-export default TaskForm;
+export default CreateTaskForm;

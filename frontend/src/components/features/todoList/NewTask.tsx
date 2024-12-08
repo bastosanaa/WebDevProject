@@ -1,6 +1,6 @@
 import "../../pages/MainPage.css";
 import React from "react";
-import TaskForm from "./CreateTaskForm";
+import CreateTaskForm from "./CreateTaskForm";
 
 interface NewTaskProps {
   onClose: () => void;
@@ -12,7 +12,7 @@ const NewTask: React.FC<NewTaskProps> = ({ onClose }) => {
       <button className="absolute top-0 right-0 p-4" onClick={onClose}>
         <b>X</b>
       </button>
-      <TaskForm onClose={onClose} />
+      <CreateTaskForm onClose={onClose} />
     </div>
   );
 };

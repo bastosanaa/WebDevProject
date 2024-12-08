@@ -47,6 +47,12 @@
   letter-spacing: 0.2svw;
 }
 
+.side-right .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .names {
   justify-content: center;
   text-align: left;

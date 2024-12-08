@@ -1,32 +1,50 @@
 import "../pages/MainPage.css";
-import {getUser} from "../../service/users";
+import { deleteFriend} from "../../service/users";
 import AddFriendSide from "./AddFriendSide";
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import { useAuth } from "../../hooks/useAuth.tsx";
+import { toast } from "react-toastify";
+import { BsFillPersonDashFill, BsFillPersonPlusFill } from "react-icons/bs";
 
 interface SideBarProps {
   isOpen: boolean;
 }
 
-// interface Friend {
-//   _id: string;
-//   nome: string;
-//   email: string;
-// }
+interface Friend {
+  _id: string,
+  nome: string,
+}
 
 const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
   const [addFriendVisible, setAddFriendVisible] = useState(false);
-  // const [friends, setFriends] = useState<Friend[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
+  const auth = useAuth();
 
-  // const getFriends = async () => {
-  //   try {
-  //     const user = await getUser();
-  //     const friends_ids = user.amigos.map((friendObj: {usuario_id: string}) => friendObj.usuario_id);
+  const getFriends = async () => {
+    try {
+      if (auth.user && Array.isArray(auth.user.amigos)) {
+        const friends = auth.user.amigos.map((amigo) => amigo);
+        setFriends(friends);
+      }
+    } catch (err) {
+      console.log("Erro ao puxar amigos do usuário: ", err);
+    }
+  };
 
-  //     const friendPromises =
-  //   } catch (err) {
-  //     console.log("Erro ao puxar tarefas do usuário: ");
-  //   }
-  // };
+  const handleDeleteFriend = async (friendId: string) => {
+    try {
+      await deleteFriend(friendId);
+      setFriends((prevFriends) => prevFriends.filter((friend) => friend._id !== friendId));
+      toast.warning('Amigo removido!');
+    } catch (err) {
+      console.log('friend id: ', friendId);
+      console.error('Erro ao remover amigo: ', err);
+    }
+  };
+
+  useEffect(() => {
+    getFriends();
+  }, []);
 
   return (
     <div className={`side-right fixed inset-y-0 right-0 w-60 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
@@ -35,15 +53,28 @@ const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
           <b>AMIGOS</b>
         </span>
         <div className="names mt-2">
-          <span>nome_surname</span>
-          <br />
-          <span>habibi_shihaji</span>
-          <br />
-          <span>streptococus_fungi</span>
+          {friends.map((friend) => (
+            <div key={friend._id} className="friend space-x-4 inline-block">
+              <span>{friend.nome}</span>
+              <button
+                  className="delete"
+                  title="Excluir amigo"
+                  onClick={() => {if (auth.user) {
+                      handleDeleteFriend(friend._id);
+                    }
+                  }}
+                >
+                  <BsFillPersonDashFill />
+                </button>
+            </div>
+          ))}
         </div>
       </div>
       {!addFriendVisible && (
-        <button className="button w-full !rounded-none p-2 hover:bg-rosa-mais-escuro transition" onClick={() => setAddFriendVisible(true)}>+ AMIGO</button>
+        <button className="button w-full !rounded-none p-2 hover:bg-rosa-mais-escuro transition gap-2" onClick={() => setAddFriendVisible(true)}>
+          <BsFillPersonPlusFill size={20}/>
+          <span>AMIGO</span>
+        </button>
       )}
       {addFriendVisible && (
         <AddFriendSide onClose={() => setAddFriendVisible(false)} />
