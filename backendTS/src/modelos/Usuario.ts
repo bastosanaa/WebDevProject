@@ -7,7 +7,7 @@ export interface IUsuario extends Document {
     email: string;
     senha: string;
     experiencia: number;
-    amigos: { usuario_id: mongoose.Types.ObjectId }[];
+    amigos: { usuario_id: mongoose.Types.ObjectId, nome: string }[];
     tarefasEmGrupo: { tarefa_id: mongoose.Types.ObjectId }[];
 }
 
@@ -37,6 +37,9 @@ const UsuarioSchema: Schema<IUsuario> = new Schema(
                     type: mongoose.Types.ObjectId,
                     ref: "usuarios",
                 },
+                nome: {
+                    type: String
+                }
             },
         ],
         tarefasEmGrupo: [

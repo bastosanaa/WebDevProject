@@ -56,10 +56,6 @@ const TarefaModelo: Schema<Tarefa> = new Schema({
             type: String,
             required: true
         }
-        // tempo_foco: {
-        //     type: Number,
-        //     default: 0
-        // }
     }]
 });
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { Usuario } from "../modelos/Usuario";
+import { Tarefa } from '../modelos/Tarefa';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -167,8 +168,8 @@ const controladorUsuario = {
         }
     
         // Adicionar o amigo no campo `amigos` de ambos os usuários
-        usuario.amigos.push({ usuario_id: amigo._id as mongoose.Types.ObjectId });
-        amigo.amigos.push({ usuario_id: usuario._id as mongoose.Types.ObjectId });
+        usuario.amigos.push({ usuario_id: amigo._id as mongoose.Types.ObjectId, nome: amigo.nome as string });
+        amigo.amigos.push({ usuario_id: usuario._id as mongoose.Types.ObjectId, nome: usuario.nome as string });
     
         // Salvar as alterações no banco
         await usuario.save();
@@ -219,7 +220,7 @@ const controladorUsuario = {
         const usuario_id = req.usuario_id;
         const { tarefa_id } = req.body;
     
-            // Verifica se os dados foram fornecidos
+        try {
             if (!usuario_id || !tarefa_id) {
                 res.status(400).json({ msg: "Usuário ou tarefa não informados" });
                 return;
@@ -232,7 +233,15 @@ const controladorUsuario = {
                 return;
             }
     
-            const tarefaJaAssociada = usuario.tarefasEmGrupo.some(tarefa => 
+            const tarefa = await Tarefa.findById(tarefa_id);
+    
+            if (!tarefa) {
+                res.status(404).json({ msg: "Tarefa não encontrada" });
+                return;
+            }
+    
+            // Verifica se a tarefa já está associada ao usuário
+            const tarefaJaAssociada = usuario.tarefasEmGrupo.some(tarefa =>
                 tarefa.tarefa_id.toString() === tarefa_id
             );
     
@@ -241,45 +250,79 @@ const controladorUsuario = {
                 return;
             }
     
+            // Adiciona a tarefa à lista de tarefas em grupo do usuário
             usuario.tarefasEmGrupo.push({ tarefa_id });
             await usuario.save();
     
-            res.status(200).json({ msg: "Tarefa adicionada ao grupo com sucesso" });
-        },
-
-        removeTarefaEmGrupo: async (req: Request, res: Response): Promise<void> => {
-            const usuario_id = req.usuario_id;
-            const { tarefa_id } = req.body;
-        
-                if (!usuario_id || !tarefa_id) {
-                    res.status(400).json({ msg: "Usuário ou tarefa não informados" });
-                    return;
-                }
-        
-                const usuario = await Usuario.findById(usuario_id);
-        
-                if (!usuario) {
-                    res.status(404).json({ msg: "Usuário não encontrado" });
-                    return;
-                }
-        
-                const tarefaIndex = usuario.tarefasEmGrupo.findIndex(
-                    tarefa => tarefa.tarefa_id.toString() === tarefa_id
-                );
-        
-                if (tarefaIndex === -1) {
-                    res.status(404).json({ msg: "Tarefa não encontrada na lista do usuário" });
-                    return;
-                }
-        
-                usuario.tarefasEmGrupo.splice(tarefaIndex, 1);
-        
-                await usuario.save();
-        
-                res.status(200).json({ msg: "Tarefa removida do grupo com sucesso" });
-        }
+            // Adiciona o usuário à lista de membros da tarefa
+            tarefa.membros.push({
+                usuario_id: (usuario_id),
+                nome_usuario: usuario.nome,
+                tempo_foco: 0
+            });
+            await tarefa.save();
     
-};
+            res.status(200).json({ msg: "Tarefa adicionada ao grupo com sucesso" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: "Erro ao adicionar a tarefa ao grupo" });
+        }
+    },
+    
+    removeTarefaEmGrupo: async (req: Request, res: Response): Promise<void> => {
+        const usuario_id = req.usuario_id;
+        const { tarefa_id } = req.body;
+    
+        try {
+            if (!usuario_id || !tarefa_id) {
+                res.status(400).json({ msg: "Usuário ou tarefa não informados" });
+                return;
+            }
+    
+            const usuario = await Usuario.findById(usuario_id);
+    
+            if (!usuario) {
+                res.status(404).json({ msg: "Usuário não encontrado" });
+                return;
+            }
+    
+            const tarefa = await Tarefa.findById(tarefa_id);
+    
+            if (!tarefa) {
+                res.status(404).json({ msg: "Tarefa não encontrada" });
+                return;
+            }
+    
+            // Remove a tarefa da lista de tarefas em grupo do usuário
+            const tarefaIndex = usuario.tarefasEmGrupo.findIndex(tarefa =>
+                tarefa.tarefa_id.toString() === tarefa_id
+            );
+    
+            if (tarefaIndex === -1) {
+                res.status(404).json({ msg: "Tarefa não encontrada na lista do usuário" });
+                return;
+            }
+    
+            usuario.tarefasEmGrupo.splice(tarefaIndex, 1);
+            await usuario.save();
+    
+            // Remove o usuário da lista de membros da tarefa
+            const membroIndex = tarefa.membros.findIndex(
+                membro => membro.usuario_id.toString() === usuario_id
+            );
+    
+            if (membroIndex !== -1) {
+                tarefa.membros.splice(membroIndex, 1);
+                await tarefa.save();
+            }
+    
+            res.status(200).json({ msg: "Tarefa removida do grupo com sucesso" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: "Erro ao remover a tarefa do grupo" });
+        }
+    }
+}    
 
 export default controladorUsuario;
 
