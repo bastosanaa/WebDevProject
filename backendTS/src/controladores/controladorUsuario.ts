@@ -143,7 +143,7 @@ const controladorUsuario = {
     // OBS - addAmigo: esta rota tem relacao as acoes feitas a entidade USUARIO e so deve ser chamadas após a aceitação de um convite de amizade (notificacao)
     addAmigo: async (req: Request, res: Response): Promise<void> => {
         const { amigo_id } = req.body;
-        const usuario_id = req.usuario_id 
+        const usuario_id = req.usuario_id || req.body.usuario_id
         // Validar os IDs antes de usá-los
         if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {
             res.status(400).json({ mensagem: 'IDs inválidos fornecidos.' });
