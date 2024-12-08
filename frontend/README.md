@@ -4,7 +4,7 @@
 2. Iniciar o banco de dados e o backend
 3. Iniciar o frontend com npm run dev, o projeto iniciará em localhost:5173.
 
-## Estrutura do projeto
+# Estrutura do projeto
 
 Projeto está organizado dessa forma:
 ```/src
@@ -16,9 +16,10 @@ Projeto está organizado dessa forma:
  /contexts # Contextos de login
  /hooks # Hooks de login
  /service # Services para utilização de rotas do backend
- /utils # Utilidades gerais do projeto```
+ /utils # Utilidades gerais do projeto
+```
 
-## Componentes do projeto
+# Componentes do projeto
 - AddFriendForm
 - AddFriendSide
 - CreateTaskForm
