@@ -127,7 +127,38 @@ const controladorTarefa = {
 
         res.status(200).json({ mensagem: 'Status da tarefa atualizado com sucesso.', tarefa });
         return;
-    }
+    },
+
+    getTarefasGrupoPorUsuario: async (req: Request, res: Response): Promise<void> => {
+        const usuario_id = req.usuario_id;
+    
+
+            const usuario = await Usuario.findById(usuario_id);
+    
+            if (!usuario) {
+                res.status(404).json({ msg: "Usuário não encontrado" });
+                return;
+            }
+    
+            // Lista de IDs das tarefas em grupo do usuário
+            const tarefaIds = usuario.tarefasEmGrupo.map(tarefa => tarefa.tarefa_id);
+    
+            if (tarefaIds.length === 0) {
+                res.status(404).json({ msg: "Nenhuma tarefa em grupo encontrada para este usuário" });
+                return;
+            }
+    
+            // Busca as tarefas pelo controlador de tarefas
+            const tarefas = await Tarefa.find({ _id: { $in: tarefaIds } });
+    
+            if (!tarefas || tarefas.length === 0) {
+                res.status(404).json({ msg: "Nenhuma tarefa encontrada para os IDs fornecidos" });
+                return;
+            }
+    
+            res.status(200).json({ tarefas, msg: "Tarefas encontradas com sucesso" });
+    },
+    
 };
 
 export default controladorTarefa;

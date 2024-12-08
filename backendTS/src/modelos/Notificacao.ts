@@ -2,11 +2,12 @@ import mongoose, { Document, Schema } from "mongoose";
 
 // Interface para a notificação
 export interface INotificacao extends Document {
-    remetente: mongoose.Schema.Types.ObjectId; // ID do usuário que enviou a notificação
-    destinatario: mongoose.Schema.Types.ObjectId; // ID do usuário que recebe a notificação
-    tipo: "convite_amizade" | "convite_tarefa_grupo"; // Tipo de notificação
-    status: "pendente" | "aceito" | "recusado"; // Status da notificação
-    mensagem?: string; // Mensagem adicional (opcional)
+    remetente: mongoose.Schema.Types.ObjectId; 
+    destinatario: mongoose.Schema.Types.ObjectId; 
+    tipo: "convite_amizade" | "convite_tarefa_grupo"; 
+    status: "pendente" | "aceito" | "recusado"; 
+    mensagem?: string; 
+    tarefaEmGrupo?: mongoose.Schema.Types.ObjectId
 }
 
 // Esquema da notificação
@@ -21,6 +22,10 @@ const NotificacaoSchema: Schema<INotificacao> = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "usuarios",
             required: true,
+        },
+        tarefaEmGrupo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tarefas",
         },
         tipo: {
             type: String,

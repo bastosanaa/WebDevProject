@@ -33,11 +33,16 @@ roteador.route("/updateStatus/:id").patch(
     }
 );
 
+roteador.route("/getTarefasGrupo").get(
+    (req: Request, res: Response, next: NextFunction) => {
+        tryCatch(req, res, next, controladorTarefa.getTarefasGrupoPorUsuario);
+    }
+);
+
 roteador.route("/:id").get(
     (req: Request, res: Response, next: NextFunction) => {
         tryCatch(req, res, next, controladorTarefa.get)
     });
-
 
 
 export default roteador;

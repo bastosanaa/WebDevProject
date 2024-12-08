@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, mongo, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
 // Interface para o modelo Usuario
@@ -8,6 +8,7 @@ export interface IUsuario extends Document {
     senha: string;
     experiencia: number;
     amigos: { usuario_id: mongoose.Types.ObjectId }[];
+    tarefasEmGrupo: { tarefa_id: mongoose.Types.ObjectId }[];
 }
 
 // Esquema do usuário com as validações e criptografia da senha
@@ -38,6 +39,14 @@ const UsuarioSchema: Schema<IUsuario> = new Schema(
                 },
             },
         ],
+        tarefasEmGrupo: [
+            {
+                tarefa_id: {
+                    type: mongoose.Types.ObjectId,
+                    ref: "tarefas",
+                }
+            }
+        ]
     },
     { timestamps: true }
 );

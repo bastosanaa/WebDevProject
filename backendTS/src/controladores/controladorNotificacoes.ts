@@ -117,40 +117,60 @@ const controladorNotificacao = {
     updateStatus: async (req: Request, res: Response): Promise<void> => {
         const { id } = req.params;
         const { status } = req.body;
-
+    
         if (!["pendente", "aceito", "recusado"].includes(status)) {
             res.status(400).json({ msg: "Status inválido" });
             return;
         }
-
+    
         const notificacao = await Notificacao.findById(id);
-
+    
         if (!notificacao) {
-            res.status(404).json({ msg: 'Notificação não encontrada' });
+            res.status(404).json({ msg: "Notificação não encontrada" });
             return;
         }
-
-        // Se for um convite de amizade e o status for aceito, adicionar como amigo
-        if (notificacao.tipo === "convite_amizade" && status === "aceito") {
-            await chamarAddAmigo(
-                notificacao.remetente.toString(),
-                notificacao.destinatario.toString(), 
-                res
-            );
+    
+        // Atualizar status de notificações com base no tipo
+        if (status === "aceito") {
             notificacao.status = status;
             await notificacao.save();
+    
+            if (notificacao.tipo === "convite_amizade") {
+                await chamarAddAmigo(
+                    notificacao.remetente.toString(),
+                    notificacao.destinatario.toString(),
+                    res
+                );
+            } else if (notificacao.tipo === "convite_tarefa_grupo") {
+                if (!notificacao.tarefaEmGrupo) {
+                    res.status(400).json({ msg: "Tarefa associada não encontrada" });
+                    return;
+                }
+    
+                await chamarAddTarefaEmGrupo(
+                    notificacao.destinatario.toString(),
+                    notificacao.tarefaEmGrupo.toString(),
+                    res
+                );
+            }
+            return;
+        } else if (status === "recusado") {
+            await notificacao.deleteOne();
+            res.status(200).json({ msg: "Convite recusado" });
             return;
         }
-
+    
         notificacao.status = status;
         await notificacao.save();
+        res.status(200).json({ msg: "Status da notificação atualizado com sucesso", notificacao });
+    },
+    
+}
 
-        res.status(200).json({ msg: 'Status da notificação atualizado com sucesso', notificacao });
-    }
-};
 
 export default controladorNotificacao;
 
+//Funções de apoio
 const chamarAddAmigo = async (remetenteId: string, destinatarioId: string, res: Response) => {
     // Criar objetos simulados de Request e Response para chamar a função addAmigo
     const addAmigoReq = { 
@@ -169,4 +189,28 @@ const chamarAddAmigo = async (remetenteId: string, destinatarioId: string, res: 
     
     // Chamar a função addAmigo diretamente
     await controladorUsuario.addAmigo(addAmigoReq, addAmigoRes);
+};
+
+const chamarAddTarefaEmGrupo = async (
+    destinatarioId: string,
+    tarefaId: string,
+    res: Response
+): Promise<void> => {
+    // Criar objetos simulados de Request e Response para chamar a função addEmTarefaEmGrupo
+    const addTarefaReq = {
+        usuario_id: destinatarioId,
+        body: {
+            tarefa_id: tarefaId,
+        },
+    } as Request;
+
+    const addTarefaRes = {
+        status: (statusCode: number) => ({
+            json: (message: { mensagem: string }) =>
+                res.status(statusCode).json(message),
+        }),
+    } as Response;
+
+    // Chamar a função addEmTarefaEmGrupo do controlador do usuário
+    await controladorUsuario.addEmTarefaEmGrupo(addTarefaReq, addTarefaRes);
 };

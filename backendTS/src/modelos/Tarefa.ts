@@ -55,11 +55,11 @@ const TarefaModelo: Schema<Tarefa> = new Schema({
         nome_usuario: {
             type: String,
             required: true
-        },
-        tempo_foco: {
-            type: Number,
-            default: 0
         }
+        // tempo_foco: {
+        //     type: Number,
+        //     default: 0
+        // }
     }]
 });
 

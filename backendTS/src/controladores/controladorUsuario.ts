@@ -24,7 +24,8 @@ const controladorUsuario = {
             email,
             senha: await hashSenha(senha),
             experiencia: 0,
-            amigos: []
+            amigos: [],
+            tarefasEmGrupo: []
         };
         const nomeUsuarioEmUso = await Usuario.find({ nome: usuario.nome });
         if (nomeUsuarioEmUso.length > 0) {
@@ -97,14 +98,10 @@ const controladorUsuario = {
 
         res.status(200).json({ usuario, msg: "Usuário atualizado com sucesso", token });
     },
-    //continua recebendo parametro de usuario (talvez precise arrumar pois nao sei se da para nao passar parametro)
     get: async (req: Request, res: Response): Promise<void> => {
         const id  = req.usuario_id
-        console.log(id);
-        
 
         const usuario = await Usuario.findById(id).select("-senha")
-        console.log(usuario);
         
         if (!usuario) {
             res.status(404).json({ msg: "usuario não encontrado" });
@@ -145,8 +142,7 @@ const controladorUsuario = {
     // OBS - addAmigo: esta rota tem relacao as acoes feitas a entidade USUARIO e so deve ser chamadas após a aceitação de um convite de amizade (notificacao)
     addAmigo: async (req: Request, res: Response): Promise<void> => {
         const { amigo_id } = req.body;
-        const usuario_id = req.usuario_id || req.body.usuario_id
-
+        const usuario_id = req.usuario_id 
         // Validar os IDs antes de usá-los
         if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {
             res.status(400).json({ mensagem: 'IDs inválidos fornecidos.' });
@@ -182,7 +178,8 @@ const controladorUsuario = {
     },
 
     removeAmigo: async (req: Request, res: Response): Promise<void> => {
-        const { usuario_id, amigo_id } = req.body;
+        const { amigo_id } = req.body;
+        const usuario_id = req.usuario_id 
     
         // Validar os IDs antes de usá-los
         if (!mongoose.Types.ObjectId.isValid(usuario_id) || !mongoose.Types.ObjectId.isValid(amigo_id)) {
@@ -216,7 +213,71 @@ const controladorUsuario = {
         await amigo.save();
     
         res.status(200).json({ mensagem: 'Amizade desfeita com sucesso!' });
-    }
+    },
+
+    addEmTarefaEmGrupo: async (req: Request, res: Response): Promise<void> => {
+        const usuario_id = req.usuario_id;
+        const { tarefa_id } = req.body;
+    
+            // Verifica se os dados foram fornecidos
+            if (!usuario_id || !tarefa_id) {
+                res.status(400).json({ msg: "Usuário ou tarefa não informados" });
+                return;
+            }
+    
+            const usuario = await Usuario.findById(usuario_id);
+    
+            if (!usuario) {
+                res.status(404).json({ msg: "Usuário não encontrado" });
+                return;
+            }
+    
+            const tarefaJaAssociada = usuario.tarefasEmGrupo.some(tarefa => 
+                tarefa.tarefa_id.toString() === tarefa_id
+            );
+    
+            if (tarefaJaAssociada) {
+                res.status(400).json({ msg: "A tarefa já está associada ao usuário" });
+                return;
+            }
+    
+            usuario.tarefasEmGrupo.push({ tarefa_id });
+            await usuario.save();
+    
+            res.status(200).json({ msg: "Tarefa adicionada ao grupo com sucesso" });
+        },
+
+        removeTarefaEmGrupo: async (req: Request, res: Response): Promise<void> => {
+            const usuario_id = req.usuario_id;
+            const { tarefa_id } = req.body;
+        
+                if (!usuario_id || !tarefa_id) {
+                    res.status(400).json({ msg: "Usuário ou tarefa não informados" });
+                    return;
+                }
+        
+                const usuario = await Usuario.findById(usuario_id);
+        
+                if (!usuario) {
+                    res.status(404).json({ msg: "Usuário não encontrado" });
+                    return;
+                }
+        
+                const tarefaIndex = usuario.tarefasEmGrupo.findIndex(
+                    tarefa => tarefa.tarefa_id.toString() === tarefa_id
+                );
+        
+                if (tarefaIndex === -1) {
+                    res.status(404).json({ msg: "Tarefa não encontrada na lista do usuário" });
+                    return;
+                }
+        
+                usuario.tarefasEmGrupo.splice(tarefaIndex, 1);
+        
+                await usuario.save();
+        
+                res.status(200).json({ msg: "Tarefa removida do grupo com sucesso" });
+        }
     
 };
 
