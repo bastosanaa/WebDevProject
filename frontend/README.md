@@ -7,7 +7,7 @@
 ## Estrutura do projeto
 
 Projeto está organizado dessa forma:
-/src
+```/src
  /assets # Imagens utilizadas
  /components # Componentes do projeto
    /features/todoList # Componentes referentes as funcionalidades das tarefas
@@ -16,7 +16,7 @@ Projeto está organizado dessa forma:
  /contexts # Contextos de login
  /hooks # Hooks de login
  /service # Services para utilização de rotas do backend
- /utils # Utilidades gerais do projeto
+ /utils # Utilidades gerais do projeto```
 
 ## Componentes do projeto
 - AddFriendForm
