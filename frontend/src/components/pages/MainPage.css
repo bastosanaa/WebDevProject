@@ -10,7 +10,7 @@
 .upper {
   @apply bg-rosa-claro;
   font-size: 175%;
-  padding: 10px;
+  padding: 1.5vh;
   position: fixed;
   z-index: 2;
 }
@@ -20,11 +20,6 @@
   width: 20%;
   height: 70%;
   cursor: pointer;
-}
-
-.user-info img {
-  max-height: 100%;
-  position: absolute;
 }
 
 .upper #hamb {
@@ -37,20 +32,19 @@
 
 .user-info #username {
   font-size: 90%;
-  left: 55px;
-  position: absolute;
+  left: 2%;
 }
 
 .side-right {
   @apply bg-rosa-claro-1;
   text-align: center;
-  margin-top: 64px;
+  margin-top: 8.5vh;
   transition: transform 0.3s ease;
 }
 
 .side-right #title {
   font-size: 150%;
-  letter-spacing: 2px;
+  letter-spacing: 0.2svw;
 }
 
 .names {
@@ -81,15 +75,14 @@
   @apply bg-rosa-claro;
   opacity: 0.9;
   text-align: left;
-  width: 150%;
-  margin-bottom: 10px;
+  width: 125%;
+  margin-bottom: 10vh;
   scrollbar-width: inherit;
   scrollbar-color: #d78794 transparent;
 }
 
 .tasks-group button {
   margin: 0;
-  border: 1px;
   font-size: 120%;
 }
 
@@ -97,7 +90,7 @@
   @apply text-rosa-claro;
   @apply bg-rosa-escuro;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 50vh;
   font-size: 130%;
 }
 
@@ -109,8 +102,10 @@
 
 .task-detail {
   @apply bg-rosa-claro;
+  opacity: 0.9;
   text-align: left;
   width: 150%;
+
 }
 
 .titulo {
@@ -142,4 +137,36 @@
 
 .new-task {
   @apply bg-rosa-claro;
+  opacity: 0.9;
+  margin-top: 10vh;
+  margin-right: 10vh;
+  margin-left: 10vh;
+  margin-bottom: 10vh;
+}
+
+.edit-task {
+  @apply bg-rosa-claro;
+  opacity: 0.9;
+  margin-top: 10vh;
+  margin-right: 10vh;
+  margin-left: 10vh;
+  margin-bottom: 10vh;
+}
+
+.add-friend-form{
+  width: 100%;
+}
+
+#username-wrapper{
+  position: relative;
+}
+
+.notification-dot {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 4vh;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
 }

@@ -8,6 +8,8 @@ import NewTask from "../features/todoList/NewTask";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Profile from "../Profile";
+import EditTask from "../features/todoList/EditTask";
+
 
 const MainPage: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -27,17 +29,9 @@ const MainPage: React.FC = () => {
   const [taskUpper, setTaskState] = useState(true);
   const [pomoUpper, setPomoState] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showEditTask, setShowEditTask] = useState(false);
 
-  const handleTaskClick = (task: {
-    _id: string;
-    titulo: string;
-    usuario_id: string;
-    meta_tempo?: string;
-    data_termino?: string;
-    em_andamento: boolean;
-    em_grupo?: boolean;
-    membros?: string[];
-  }) => {
+  const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
     setShowTasks(false);
     setShowNewTask(false);
@@ -54,6 +48,18 @@ const MainPage: React.FC = () => {
   const handleAddTask = () => {
     setShowNewTask(true);
     setShowTasks(false);
+    setSelectedTask(null);
+  };
+
+  const handleEditTask = (task: Task) => {
+    setSelectedTask(task);
+    setShowTasks(false);
+    setShowEditTask(true);
+  };
+
+  const handleCloseEditTask = () => {
+    setShowEditTask(false);
+    setShowTasks(true);
     setSelectedTask(null);
   };
 
@@ -105,17 +111,19 @@ const MainPage: React.FC = () => {
         pomo={pomoUpper}
       />
       <SideBar isOpen={isSideBarOpen} />
-      {showTasks && !showNewTask && (
+      {showTasks && !showNewTask && !showEditTask &&(
         <Tasks
           onTaskClick={handleTaskClick}
           onAddTask={handleAddTask}
           isSideBarOpen={isSideBarOpen}
+          onEditTask={handleEditTask}
         />
       )}
 
-      {selectedTask && <Task task={selectedTask} onClose={handleCloseDetail} />}
+      {selectedTask && !showEditTask && <Task task={selectedTask} onClose={handleCloseDetail} />}
 
       {showNewTask && <NewTask onClose={handleCloseNewTask} />}
+      {showEditTask && selectedTask && <EditTask task={selectedTask} onClose={handleCloseEditTask} />}
       {showProfile && <Profile onClose={handleCloseProfile} />}
     </div>
   );
