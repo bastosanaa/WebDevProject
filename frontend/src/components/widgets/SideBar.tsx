@@ -64,7 +64,7 @@ const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
                     }
                   }}
                 >
-                  <BsFillPersonDashFill />
+                  <BsFillPersonDashFill size={20}/>
                 </button>
             </div>
           ))}

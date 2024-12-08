@@ -1,3 +1,121 @@
+@media (max-width: 768px) {
+  .main-page {
+    padding: 10px;
+  }
+
+  .upper {
+    font-size: 150%;
+    padding: 1vh;
+  }
+
+  .user-info {
+    width: 40%;
+    height: auto;
+  }
+
+  .side-right {
+    margin-top: 12vh;
+  }
+
+  .tasks {
+    margin: 5vh 2vh;
+    text-align: left;
+  }
+
+  .tasks-group {
+    width: 100%;
+    margin-bottom: 5vh;
+  }
+
+  .plus-task {
+    margin-bottom: 5vh;
+    font-size: 100%;
+  }
+
+  .friend {
+    font-size: 100%;
+  }
+
+  .notification-dot {
+    width: 6px;
+    height: 6px;
+    margin-bottom: 2vh;
+  }
+
+  .task-detail {
+    padding: 16px;
+    width: 95%;
+  }
+
+  .titulo {
+    font-size: 1.25rem;
+  }
+
+  .timer {
+    height: 80px;
+    width: 80px;
+    font-size: 1.25rem;
+  }
+
+  select {
+    font-size: 0.9rem;
+  }
+
+  .pause {
+    font-size: 1rem;
+  }
+  
+}
+
+@media (max-width: 1024px) {
+  .main-page {
+    padding: 20px;
+  }
+
+  .upper {
+    font-size: 160%;
+    padding: 1.2vh;
+  }
+
+  .user-info {
+    width: 30%;
+    height: auto;
+  }
+
+  .side-right {
+    margin-top: 10vh;
+  }
+
+  .tasks {
+    margin: 8vh 5vh;
+  }
+
+  .tasks-group {
+    width: 110%;
+    margin-bottom: 8vh;
+  }
+
+  .plus-task {
+    margin-bottom: 8vh;
+    font-size: 110%;
+  }
+
+  .task-detail {
+    width: 120%;
+    margin: 8vh 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .tasks {
+    margin: 10vh 15vh;
+  }
+
+  .plus-task {
+    margin-bottom: 10vh;
+  }
+}
+
 .main-page {
   display: flex;
   flex-direction: column;
@@ -176,3 +294,22 @@
   background-color: red;
   border-radius: 50%;
 }
+
+li button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+li.border-vermelho-encerrado {
+  background-color: #f8d7da; /* Exemplo de cor para tarefas encerradas */
+}
+
+li.border-vermelho-encerrado .end,
+li.border-vermelho-encerrado .edit {
+  display: none;
+}
+
+.friend{
+  font-size: 125%;
+}
+

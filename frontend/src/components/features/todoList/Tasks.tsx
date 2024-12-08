@@ -83,10 +83,10 @@ const Tasks: React.FC<TasksProps> = ({
               className={`flex justify-between items-center ${
                 task.em_andamento
                   ? "bg-rosa-claro"
-                  : "border border-vermelho-encerrado"
+                  : "border border-vermelho-encerrado opacity-50 cursor-not-allowed"
               }`}
             >
-              <button className="p-4" onClick={() => onTaskClick(task)}>
+              <button className="p-4" onClick={() => task.em_andamento && onTaskClick(task)} disabled={!task.em_andamento}>
                 {task.titulo}
               </button>
               <div className="flex space-x-2 p-2">

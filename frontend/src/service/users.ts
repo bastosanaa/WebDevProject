@@ -103,9 +103,25 @@ export const createUser = async (userData: {
 // remover parametro id já que estou utilizando o token para puxar o id no backend
 export const deleteFriend = async (friendId: string) => {
   try {
-    const response = await api.patch('usuarios/removeAmigo', {
-      friendId,
-    });
+    const response = await api.patch('usuarios/removeAmigo', friendId);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to delete user");
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+/**
+ * Adiciona tarefa em grupo
+ * @param taskId - O ID da tarefa a ser adicionada.
+ */
+
+// remover parametro id já que estou utilizando o token para puxar o id no backend
+export const addEmTarefaEmGrupo = async (taskId: string) => {
+  try {
+    const response = await api.patch('usuarios/addTarefaGrupo', taskId);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
