@@ -2,7 +2,8 @@ import "../pages/MainPage.css";
 import "./SideBar.tsx";
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { getNotifications } from "../../service/notifications.ts";
 
 interface NavBarProps {
   toggleSideBar: () => void;
@@ -23,20 +24,40 @@ const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const auth = useAuth();
   const navigate = useNavigate();
+  const [hasNotifs, setHasNotifs] = useState(false);
 
   const handleLogout = () => {
     auth.logout();
     navigate("/login");
   };
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try{
+        const notifications = await getNotifications()
+        const pending = notifications.notificacoes.some(
+          (notification: any) => notification.status === 'pendente'
+        );
+        setHasNotifs(pending);
+      } catch (err) {
+        console.error('Erro ao puxar notificações: ', err);
+      }
+    };
+    fetchNotifications();
+  }, []);
+
   return (
     <div className="object-none object-top">
       <div className="upper absolute inset-x-0 top-0 h-16 w-full">
         <div className="user-info">
-          <div onClick={toggleUserInfo}>
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
-            <span id="username">
-              {auth.user ? auth.user.nome : "Carregando..."}
+          <div onClick={toggleUserInfo} className="absolute">
+            <span id="username-wrapper" className="relative inline-block">
+              <span id="username">
+                {auth.user ? auth.user.nome : "Carregando..."}
+              </span>
+              {hasNotifs && (
+                <span className="notification-dot"></span>
+              )}
             </span>
           </div>
           <div

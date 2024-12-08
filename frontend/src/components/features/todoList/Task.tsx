@@ -5,7 +5,6 @@ interface Task{
     _id: string;
     titulo: string; 
     usuario_id: string;
-    meta_tempo?: string; 
     data_termino?: string; 
     em_andamento: boolean;
     em_grupo?: boolean; 
@@ -61,13 +60,22 @@ const Task: React.FC<{ task: Task; onClose: () => void }> = ({ task, onClose }) 
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
+    const formatDate = (dateString: string | undefined) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
     return (
         <div className="task-detail-overlay w-full">
             <div className="task-detail relative grid place-items-center scale-125 h-80 rounded-2xl">
                 <h1 className="titulo absolute left-0 top-0 p-4"><b>{task.titulo}</b></h1> 
                 <div className="task-info absolute left-4 top-10 mt-5">
-                    <h3 className="meta_tempo">Meta de tempo:{task.meta_tempo}</h3>
-                    <h3 className="data_termino">Data término: {task.data_termino}</h3>
+                    <h3 className="data_termino">Data término: {formatDate(task.data_termino)}</h3>
                     <h3 className="membros">Membros: {task.membros?.join(', ')}</h3>
                 </div>
                 <button className="absolute top-0 right-0 p-4" onClick={onClose}><b>X</b></button>

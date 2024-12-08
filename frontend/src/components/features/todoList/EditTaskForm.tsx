@@ -1,15 +1,24 @@
 import "../../pages/MainPage.css";
-import React, { useState } from "react";
-import { createTask } from "../../../service/tasks";
+import React, { useEffect, useState } from "react";
+import { updateTask } from "../../../service/tasks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Task from "./Task";
+import EditTask from "./EditTask";
 
 interface TaskFormProps {
   onClose: () => void;
-  editTask?: Task;
+  task: {
+    _id: string;
+    titulo: string;
+    usuario_id: string;
+    meta_tempo?: string;
+    data_termino?: string;
+    em_andamento: boolean;
+    em_grupo?: boolean;
+    membros?: string[];
+  };
 }
-
 // const initialTaskState: Task = {
 //   titulo: "",
 //   meta_tempo: "",
@@ -18,35 +27,31 @@ interface TaskFormProps {
 //   membros: [] as string[],
 // };
 
-const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
+const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
   const navigate = useNavigate();
 
-  const [showMetaTempo, setShowMetaTempo] = useState(false);
-  const [showDataTermino, setShowDataTermino] = useState(false);
-
   const [formData, setFormData] = useState({
-    titulo: "",
-    meta_tempo: "",
-    data_termino: "",
-    em_grupo: false,
-    membros: [] as string[],
+    titulo: task.titulo,
+    data_termino: task.data_termino || '',
+    em_grupo: task.em_grupo,
+    membros: task.membros || [],
   });
 
-  const handleCreateTask = async (event?: React.FormEvent) => {
+  const handleEditTask = async (event?: React.FormEvent) => {
     event?.preventDefault();
     try {
-      await createTask({
+      await updateTask(task._id, {
         titulo: formData.titulo,
-        meta_tempo: formData.meta_tempo,
-        data_termino: formData.data_termino,
-        membros: formData.membros,
+        data_termino: formData.data_termino || '',
+        em_grupo: formData.em_grupo,
+        membros: formData.membros || [],
       });
-      toast.success("Tarefa criada com sucesso!");
+      toast.success("Tarefa editada com sucesso!");
       navigate("/");
       onClose();
     } catch (error) {
       console.error("Erro:", error);
-      alert("Ocorreu um erro ao criar a tarefa");
+      alert("Ocorreu um erro ao editar a tarefa");
     }
   };
 
@@ -75,6 +80,24 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
     }
   };
 
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    setFormData({
+        titulo: task.titulo,
+        data_termino: formatDate(task.data_termino),
+        em_grupo: task.em_grupo,
+        membros: task.membros || [],
+    });
+  }, [task]);
+
   return (
     <form className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
@@ -88,52 +111,16 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
           required
         />
       </div>
-
       <div className="flex flex-col gap-1">
-        <label className="label">
-          Deseja informar meta de tempo para conclusão?
-        </label>
+        <label className="label">Data de término</label>
         <input
-          type="checkbox"
-          checked={showMetaTempo}
-          onChange={() => setShowMetaTempo(!showMetaTempo)}
+          type="date"
+          value={formData.data_termino}
+          onChange={handleChange}
+          className="input"
+          name="data_termino"
         />
       </div>
-
-      {showMetaTempo && (
-        <div className="flex flex-col gap-1">
-          <label className="label">Meta de conclusão:</label>
-          <input
-            type="text"
-            value={formData.meta_tempo}
-            onChange={handleChange}
-            className="input"
-            name="metaTempo"
-          />
-        </div>
-      )}
-
-      <div className="flex flex-col gap-1">
-        <label className="label">Deseja informar data de término?</label>
-        <input
-          type="checkbox"
-          checked={showDataTermino}
-          onChange={() => setShowDataTermino(!showDataTermino)}
-        />
-      </div>
-
-      {showDataTermino && (
-        <div className="flex flex-col gap-1">
-          <label className="label">Data de término</label>
-          <input
-            type="date"
-            value={formData.data_termino}
-            onChange={handleChange}
-            className="input"
-            name="data_termino"
-          />
-        </div>
-      )}
 
       <div className="flex flex-col gap-1">
         <label className="label">Tarefa será em grupo?</label>
@@ -160,11 +147,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
         </div>
       )}
 
-      <button type="submit" className="button" onClick={handleCreateTask}>
-        Criar
+      <button type="submit" className="button" onClick={handleEditTask}>
+        Editar
       </button>
     </form>
   );
 };
 
-export default TaskForm;
+export default EditTaskForm;

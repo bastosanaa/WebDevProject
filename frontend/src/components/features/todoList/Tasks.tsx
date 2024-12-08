@@ -23,12 +23,14 @@ interface TasksProps {
   onTaskClick: (task: Task) => void;
   onAddTask: () => void;
   isSideBarOpen: boolean;
+  onEditTask: (task: Task) => void;
 }
 
 const Tasks: React.FC<TasksProps> = ({
   onTaskClick,
   onAddTask,
   isSideBarOpen,
+  onEditTask,
 }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -95,7 +97,7 @@ const Tasks: React.FC<TasksProps> = ({
                 >
                   <BsCheckLg />
                 </button>
-                <button className="edit" title="Editar tarefa">
+                <button className="edit" title="Editar tarefa" onClick={() => {onEditTask(task)}}>
                   <BsPencilSquare />
                 </button>
                 <button

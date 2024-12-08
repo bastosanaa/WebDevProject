@@ -1,6 +1,6 @@
 import "../../pages/MainPage.css";
 import React from "react";
-import TaskForm from "./TaskForm";
+import TaskForm from "./CreateTaskForm";
 
 interface NewTaskProps {
   onClose: () => void;

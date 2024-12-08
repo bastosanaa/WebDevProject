@@ -16,7 +16,7 @@ module.exports = {
         "rosa-inter": "#edcacb",
         "rosa-escuro": "#d78794",
         "branco": "#ffffff",
-        "vermelho-encerrado": "#e61809",
+        "rosa-mais-escuro": "#bf7884",
       },
     },
   },
