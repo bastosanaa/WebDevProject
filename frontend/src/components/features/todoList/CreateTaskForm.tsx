@@ -7,7 +7,7 @@ import Task from "./Task";
 
 interface TaskFormProps {
   onClose: () => void;
-  editTask?: Task;
+  user: {amigos: string[]};
 }
 
 // const initialTaskState: Task = {
@@ -18,7 +18,7 @@ interface TaskFormProps {
 //   membros: [] as string[],
 // };
 
-const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ onClose, user }) => {
   const navigate = useNavigate();
 
   const [showDataTermino, setShowDataTermino] = useState(false);
@@ -29,6 +29,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
     em_grupo: false,
     membros: [] as string[],
   });
+
+  const [newMember, setNewMember] = useState("");
+  const [filteredFriends, setFilteredFriends] = useState<string[]>([]);
 
   const handleCreateTask = async (event?: React.FormEvent) => {
     event?.preventDefault();
@@ -63,12 +66,26 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
   };
 
   const handleAddMember = () => {
-    const newMember = prompt("Digite o usuário do membro:");
-    if (newMember) {
+    if (newMember && !formData.membros.includes(newMember)) {
       setFormData((prevState) => ({
         ...prevState,
         membros: [...prevState.membros, newMember],
       }));
+      setNewMember('');
+      setFilteredFriends([]);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewMember(value);
+    if (value) {
+      const filtered = user.amigos.filter((amigo) => 
+      amigo.toLowerCase().includes(value.toLocaleLowerCase())
+    );
+    setFilteredFriends(filtered);
+    } else {
+      setFilteredFriends([]);
     }
   };
 
@@ -121,6 +138,22 @@ const TaskForm: React.FC<TaskFormProps> = ({ onClose }) => {
         <div className="flex flex-col gap-1">
           <label className="label">Membros:</label>
           <div className="flex flex-col gap-1">
+            <input 
+              type="text"
+              value={newMember}
+              onChange={handleSearchChange}
+              placeholder="Buscar amigo..."
+              className="input" 
+            />
+            {filteredFriends.length > 0 && (
+              <ul className="suggestions-list">
+                {filteredFriends.map((amigo, index) => (
+                  <li key={index} onClick={() => setNewMember(amigo)} className="suggestion-item">
+                    {amigo}
+                  </li>
+                ))}
+              </ul>
+            )}
             <button type="button" onClick={handleAddMember} className="button">
               Adicionar Membro
             </button>
