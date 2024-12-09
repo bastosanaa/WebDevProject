@@ -78,22 +78,24 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
     }));
   };
 
-  const handleAddMember = () => {
+  const handleAddMember = async () => {
     if (newMember && auth.user) {
       if (!formData.membros.find((membro) => membro.email === newMember.email)) {
-        setFormData((prevState) => ({
-          ...prevState,
-          membros: [...prevState.membros, newMember],
-        }));
-        createNotification({
-          destinatarioEmail: newMember.email,
-          mensagem: `${auth.user.nome} te convidou para participar de uma tarefa!`,
-          tipo: 'convite_tarefa_grupo'
-        });
+        try {
+          await createNotification({
+            destinatarioEmail: newMember.email,
+            mensagem: `${auth.user.nome} te convidou para participar de uma tarefa!`,
+            tipo: 'convite_tarefa_grupo',
+          });
+          toast.success('Notificação enviada com sucesso!');
+        } catch (err) {
+          console.error("Erro ao criar notificação:", err);
+          toast.error('Erro ao enviar notificação.');
+        }
         setNewMember(null);
         setFilteredFriends([]);
       } else {
-        toast.error('Esse membro já foi adicionado')
+        toast.error('Esse membro já foi convidado')
       }
     }
   };
@@ -101,9 +103,7 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value && auth.user && Array.isArray(auth.user.amigos)) {
-      const filtered = auth.user.amigos.filter((amigo) =>
-        amigo.nome.toLowerCase().includes(value.toLocaleLowerCase())
-      );
+      const filtered = auth.user.amigos.filter((amigo) => amigo.nome.toLowerCase().includes(value.toLocaleLowerCase()));
       setFilteredFriends(filtered);
     } else {
       setFilteredFriends([]);

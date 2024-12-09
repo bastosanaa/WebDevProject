@@ -5,6 +5,7 @@ export interface Friend {
   _id: string;
   nome: string;
   usuario_id: string;
+  email: string;
 }
 
 export interface User {

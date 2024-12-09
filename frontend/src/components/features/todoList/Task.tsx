@@ -1,6 +1,11 @@
 import '../../pages/MainPage.css';
 import React, { useEffect, useState } from "react";
 
+interface Friend {
+    id: string;
+    nome: string;
+}
+
 interface Task{
     _id: string;
     titulo: string; 
@@ -8,7 +13,7 @@ interface Task{
     data_termino?: string; 
     em_andamento: boolean;
     em_grupo?: boolean; 
-    membros?: string[] 
+    membros?: Friend[] 
 }
 
 const Task: React.FC<{ task: Task; onClose: () => void }> = ({ task, onClose }) => {
@@ -76,7 +81,7 @@ const Task: React.FC<{ task: Task; onClose: () => void }> = ({ task, onClose }) 
                 <h1 className="titulo absolute left-0 top-0 p-4"><b>{task.titulo}</b></h1> 
                 <div className="task-info absolute left-4 top-10 mt-5">
                     <h3 className="data_termino">Data término: {formatDate(task.data_termino)}</h3>
-                    <h3 className="membros">Membros: {task.membros?.join(', ')}</h3>
+                    <h3 className="membros">Membros: {task.membros?.map(membro => membro.nome).join(', ')}</h3>
                 </div>
                 <button className="absolute top-0 right-0 p-4" onClick={onClose}><b>X</b></button>
                 <div className="timer-container space-y-6">
