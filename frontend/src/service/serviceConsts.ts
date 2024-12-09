@@ -1,1 +1,1 @@
-export const apiBaseUrl = "http://localhost:4444/api";
+export const apiBaseUrl = "https://bloombackend-production.up.railway.app/api";
