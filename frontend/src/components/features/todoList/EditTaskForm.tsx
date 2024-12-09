@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { updateTask } from "../../../service/tasks";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Task from "./Task";
-import EditTask from "./EditTask";
+import { createNotification } from "../../../service/notifications";
+import { useAuth } from "../../../hooks/useAuth.tsx";
 
 interface TaskFormProps {
   onClose: () => void;
@@ -16,8 +16,13 @@ interface TaskFormProps {
     data_termino?: string;
     em_andamento: boolean;
     em_grupo?: boolean;
-    membros?: string[];
+    membros?: { nome: string; email: string }[];
   };
+}
+
+interface Friend {
+  nome: string;
+  email: string;
 }
 // const initialTaskState: Task = {
 //   titulo: "",
@@ -29,6 +34,9 @@ interface TaskFormProps {
 
 const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
   const navigate = useNavigate();
+  const [newMember, setNewMember] = useState<Friend | null>(null);
+  const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
+  const auth = useAuth();
 
   const [formData, setFormData] = useState({
     titulo: task.titulo,
@@ -37,8 +45,8 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
     membros: task.membros || [],
   });
 
-  const handleEditTask = async (event?: React.FormEvent) => {
-    event?.preventDefault();
+  const handleEditTask = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       await updateTask(task._id, {
         titulo: formData.titulo,
@@ -71,12 +79,34 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
   };
 
   const handleAddMember = () => {
-    const newMember = prompt("Digite o usuário do membro:");
-    if (newMember) {
-      setFormData((prevState) => ({
-        ...prevState,
-        membros: [...prevState.membros, newMember],
-      }));
+    if (newMember && auth.user) {
+      if (!formData.membros.find((membro) => membro.email === newMember.email)) {
+        setFormData((prevState) => ({
+          ...prevState,
+          membros: [...prevState.membros, newMember],
+        }));
+        createNotification({
+          destinatarioEmail: newMember.email,
+          mensagem: `${auth.user.nome} te convidou para participar de uma tarefa!`,
+          tipo: 'convite_tarefa_grupo'
+        });
+        setNewMember(null);
+        setFilteredFriends([]);
+      } else {
+        toast.error('Esse membro já foi adicionado')
+      }
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value && auth.user && Array.isArray(auth.user.amigos)) {
+      const filtered = auth.user.amigos.filter((amigo) =>
+        amigo.nome.toLowerCase().includes(value.toLocaleLowerCase())
+      );
+      setFilteredFriends(filtered);
+    } else {
+      setFilteredFriends([]);
     }
   };
 
@@ -96,7 +126,7 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
         em_grupo: task.em_grupo,
         membros: task.membros || [],
     });
-  }, [task]);
+  }, [task.titulo, task.data_termino, task.em_grupo, task.membros]);
 
   return (
     <form className="flex flex-col gap-3">
@@ -135,12 +165,28 @@ const EditTaskForm: React.FC<TaskFormProps> = ({ onClose, task }) => {
         <div className="flex flex-col gap-1">
           <label className="label">Membros:</label>
           <div className="flex flex-col gap-1">
+          <input 
+              type="text"
+              value={newMember?.nome || ''}
+              onChange={handleSearchChange}
+              placeholder="Buscar amigo..."
+              className="input" 
+            />
+            {filteredFriends.length > 0 && (
+              <ul className="suggestions-list">
+                {filteredFriends.map((amigo, index) => (
+                  <li key={index} onClick={() => setNewMember(amigo)} className="suggestion-item">
+                    {amigo.nome}
+                  </li>
+                ))}
+              </ul>
+            )}
             <button type="button" onClick={handleAddMember} className="button">
               Adicionar Membro
             </button>
             <ul>
               {formData.membros.map((membro, index) => (
-                <li key={index}>{membro}</li>
+                <li key={index}>{membro.nome}</li>
               ))}
             </ul>
           </div>

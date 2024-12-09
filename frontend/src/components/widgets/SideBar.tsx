@@ -31,16 +31,19 @@ const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
     try {
       await deleteFriend(friendId);
       setFriends((prevFriends) => prevFriends.filter((friend) => friend._id !== friendId));
+      await getFriends();
       toast.warning('Amigo removido!');
     } catch (err) {
-      console.log('friend id: ', friendId);
       console.error('Erro ao remover amigo: ', err);
     }
   };
 
   useEffect(() => {
-    getFriends();
-  }, []);
+    if (isOpen) {
+      getFriends();
+      console.log('aaaaa');
+    }
+  }, [isOpen]);
 
   return (
     <div className={`side-right fixed inset-y-0 right-0 w-60 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>

@@ -47,7 +47,7 @@ export const updateTask = async (
     meta_tempo?: string;
     data_termino?: string;
     em_grupo?: boolean;
-    membros?: string[];
+    membros?: { nome: string; email: string }[];
   }
 ) => {
   try {
