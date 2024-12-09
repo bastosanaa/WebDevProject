@@ -5,14 +5,10 @@ import {useEffect, useState} from 'react';
 import { useAuth } from "../../hooks/useAuth.tsx";
 import { toast } from "react-toastify";
 import { BsFillPersonDashFill, BsFillPersonPlusFill } from "react-icons/bs";
+import { Friend } from "../../contexts/AuthContext.tsx";
 
 interface SideBarProps {
   isOpen: boolean;
-}
-
-interface Friend {
-  _id: string,
-  nome: string,
 }
 
 const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
@@ -60,7 +56,7 @@ const SideBar: React.FC<SideBarProps> = ({isOpen}) => {
                   className="delete"
                   title="Excluir amigo"
                   onClick={() => {if (auth.user) {
-                      handleDeleteFriend(friend._id);
+                      handleDeleteFriend(friend.usuario_id);
                     }
                   }}
                 >

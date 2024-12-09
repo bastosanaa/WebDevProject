@@ -103,7 +103,9 @@ export const createUser = async (userData: {
 // remover parametro id já que estou utilizando o token para puxar o id no backend
 export const deleteFriend = async (friendId: string) => {
   try {
-    const response = await api.patch('usuarios/removeAmigo', friendId);
+    const response = await api.patch("usuarios/removeAmigo", {
+      amigo_id: friendId,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -121,7 +123,7 @@ export const deleteFriend = async (friendId: string) => {
 // remover parametro id já que estou utilizando o token para puxar o id no backend
 export const addEmTarefaEmGrupo = async (taskId: string) => {
   try {
-    const response = await api.patch('usuarios/addTarefaGrupo', taskId);
+    const response = await api.patch("usuarios/addTarefaGrupo", taskId);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
